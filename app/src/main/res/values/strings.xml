@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">ManutencaoApp</string>
+    <string name="matricula">Matrícula</string>
+    <string name="senha">Senha</string>
+    <string name="entrar">ENTRAR</string>
+    <string name="hierarquia">Hierarquia</string>
+    <string name="pref_key">usuario</string>
+    <string name="horahomen">HoraHomem</string>
+    <string name="statusLogin">statusLogin</string>
+    <string name="ip">ip</string>
+</resources>
