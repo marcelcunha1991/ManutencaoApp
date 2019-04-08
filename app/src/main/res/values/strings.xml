@@ -8,4 +8,10 @@
     <string name="horahomen">HoraHomem</string>
     <string name="statusLogin">statusLogin</string>
     <string name="ip">ip</string>
+
+    <string name="descricao">Descrição</string>
+    <string name="idConjunto">Item</string>
+    <string name="data">Data</string>
+    <string name="manutencao">Manutenção</string>
+    <string name="responsavel">Responsável</string>
 </resources>

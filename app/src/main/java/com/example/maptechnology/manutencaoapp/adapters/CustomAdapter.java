@@ -1,6 +1,7 @@
 package com.example.maptechnology.manutencaoapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.maptechnology.manutencaoapp.R;
+import com.example.maptechnology.manutencaoapp.activities.DetalheCalendarioActivity;
 import com.example.maptechnology.manutencaoapp.models.Calendario;
 
 import java.util.ArrayList;
@@ -38,6 +40,11 @@ public class CustomAdapter extends ArrayAdapter<Calendario> implements View.OnCl
 
     }
 
+    public Calendario getCell(int position){
+
+        return getItem(position);
+    }
+
 
     @Override
     public void onClick(View view) {
@@ -45,6 +52,8 @@ public class CustomAdapter extends ArrayAdapter<Calendario> implements View.OnCl
         int position=(Integer) view.getTag();
         Object object= getItem(position);
         Calendario dataModel=(Calendario)object;
+
+
 
     }
 

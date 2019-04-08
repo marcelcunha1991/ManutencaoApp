@@ -1,5 +1,7 @@
 package com.example.maptechnology.manutencaoapp.rest;
 
+import com.example.maptechnology.manutencaoapp.models.Calendario;
+import com.example.maptechnology.manutencaoapp.models.CalendarioDetalhe;
 import com.example.maptechnology.manutencaoapp.models.Calendarios;
 import com.example.maptechnology.manutencaoapp.models.Usuario;
 
@@ -37,8 +39,14 @@ public interface RetrofitClass {
 
     @FormUrlEncoded
     @POST("calendario/detalheCalendarioPorData/")
-    Call<Calendarios> detalheCalendario(@Field("dia") String dia
+    Call<Calendarios> detalheCalendarioPorData(@Field("dia") String dia);
 
 
-    );
+    @FormUrlEncoded
+    @POST("calendario/detalheCalendario/")
+    Call<CalendarioDetalhe> detalheCalendario(@Field("id") String id);
+
+    @FormUrlEncoded
+    @POST("calendario/alteraCalendario/")
+    Call<Void> alteraStatusCalendario(@Field("status") int status,@Field("id") int id);
 }

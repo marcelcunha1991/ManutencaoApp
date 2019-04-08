@@ -7,17 +7,21 @@
 
 
     <item
-        android:id="@+id/atualizar"
-
+        android:id="@+id/qrcode"
         android:title="User"
-        android:icon="@mipmap/baseline_refresh_white_24"
+        android:icon="@mipmap/qrcode64"
         app:showAsAction="ifRoom"></item>
 
     <item
         android:id="@+id/calendario"
-
         android:title="User"
         android:icon="@mipmap/baseline_calendar_today_white_24"
+        app:showAsAction="ifRoom"></item>
+
+    <item
+        android:id="@+id/atualizar"
+        android:title="User"
+        android:icon="@mipmap/baseline_refresh_white_24"
         app:showAsAction="ifRoom"></item>
 
 

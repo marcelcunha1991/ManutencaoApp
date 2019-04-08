@@ -6,7 +6,10 @@ package com.example.maptechnology.manutencaoapp.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Calendario {
+import java.io.Serializable;
+
+@SuppressWarnings("serial")
+public class Calendario implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -28,7 +31,7 @@ public class Calendario {
     private String tempoManutencao;
     @SerializedName("status")
     @Expose
-    private Boolean status;
+    private Integer status;
     @SerializedName("idConjunto")
     @Expose
     private String idConjunto;
@@ -99,11 +102,11 @@ public class Calendario {
         this.tempoManutencao = tempoManutencao;
     }
 
-    public Boolean getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public void setStatus(Boolean status) {
+    public void setStatus(Integer status) {
         this.status = status;
     }
 

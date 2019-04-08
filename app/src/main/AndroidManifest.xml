@@ -5,6 +5,9 @@
     <uses-permission
         android:name="android.permission.INTERNET"
         android:required="true" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.hardware.camera" />
+    <uses-permission android:name="android.hardware.camera.autofocus" />
 
     <application
         android:allowBackup="true"
@@ -13,6 +16,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activities.CriarCalendarioActivity"></activity>
+        <activity android:name=".activities.CalendarActivity" />
+
+        <meta-data
+            android:name="com.google.android.gms.vision.DEPENDENCIES"
+            android:value="barcode" />
+
         <activity android:name=".activities.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,7 +31,12 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.AtividadesDiaActivity" />
-        <activity android:name=".activities.LoginWhirlpool"></activity>
+        <activity android:name=".activities.LoginWhirlpool" />
+        <activity android:name=".activities.DetalheCalendarioActivity" />
+        <activity android:name=".activities.QrCodeReaderActivity" />
+        <activity
+            android:name=".qrcodereader.barcode.BarcodeCaptureActivity"
+            android:label="Read Barcode" />
     </application>
 
 </manifest>
