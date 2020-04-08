@@ -3,17 +3,19 @@ package com.example.maptechnology.manutencaoapp.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class CalendarioDetalhe {
+import java.io.Serializable;
+
+public class CalendarioDetalhe  implements Serializable {
 
     @SerializedName("calendario")
     @Expose
-    private Calendario calendario;
+    private Atividade calendario;
 
-    public Calendario getCalendario() {
+    public Atividade getCalendario() {
         return calendario;
     }
 
-    public void setCalendario(Calendario calendario) {
+    public void setCalendario(Atividade calendario) {
         this.calendario = calendario;
     }
 

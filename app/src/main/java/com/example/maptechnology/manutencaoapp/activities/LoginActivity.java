@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.maptechnology.manutencaoapp.R;
+import com.example.maptechnology.manutencaoapp.application.AppApplication;
 import com.example.maptechnology.manutencaoapp.rest.RetrofitClass;
 import com.example.maptechnology.manutencaoapp.models.Usuario;
 import com.google.gson.Gson;
@@ -82,6 +83,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                     if (response.message().equals("OK")) {
 
+                        ((AppApplication) getApplication()).setTipoUsuario(usuario.getUser().getHierarquia());
+
+                        editor.putInt( getString(R.string.user_id), usuario.getUserData().getId());
                         editor.putString( getString(R.string.matricula), usuario.getUserData().getEmail());
                         editor.putString( getString(R.string.hierarquia), usuario.getUser().getHierarquia());
                         editor.putString( getString(R.string.horahomen), usuario.getUser().getHomemHora());
@@ -89,7 +93,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         editor.putInt(getString(R.string.statusLogin),1 );
                         editor.commit();
 
-                        Intent i = new Intent(getApplicationContext(),AtividadesDiaActivity.class);
+                        Intent i = new Intent(getApplicationContext(), OrdensDoDiaActivity.class);
                         startActivity(i);
 
                         Toast.makeText(getApplicationContext(),"Seja Bem Vindo(a) " + usuario.getUser().getNome(),Toast.LENGTH_SHORT).show();

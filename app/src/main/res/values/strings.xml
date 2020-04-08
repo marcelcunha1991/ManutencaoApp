@@ -1,4 +1,5 @@
 <resources>
+    <string name="user_id">IdUsuario</string>
     <string name="app_name">ManutencaoApp</string>
     <string name="matricula">Matrícula</string>
     <string name="senha">Senha</string>
@@ -13,5 +14,26 @@
     <string name="idConjunto">Item</string>
     <string name="data">Data</string>
     <string name="manutencao">Manutenção</string>
-    <string name="responsavel">Responsável</string>
+    <string name="responsavel">Responsável: </string>
+    <string name="inserir_atividades">Inserir Atividades</string>
+    <string name="salvar"> Salvar</string>
+
+    <string name="onde">Onde? :</string>
+    <string name="quando">Quando? :</string>
+
+    <string-array name="frequencia_list">
+        <item>Minuto</item>
+        <item>Hora</item>
+        <item>Dia</item>
+        <item>Semana</item>
+        <item>Mês</item>
+        <item>Ano</item>
+    </string-array>
+
+    <string-array name="tipo_list">
+        <item>Corretiva</item>
+        <item>Preditiva</item>
+        <item>Preventiva</item>
+    </string-array>
+
 </resources>

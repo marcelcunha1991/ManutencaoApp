@@ -1,5 +1,6 @@
 package com.example.maptechnology.manutencaoapp.activities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -37,8 +38,8 @@ public class CalendarActivity extends AppCompatActivity {
                 } else {
                     mes = String.valueOf(month + 1);
                 }
-                intent.putExtra("data",dia+ "/"+mes+"/");
-                setResult(CommonStatusCodes.SUCCESS,intent);
+                intent.putExtra("data",dia+ "/"+mes+"/"+year);
+                setResult(Activity.RESULT_OK,intent);
                 //encerra activity
                 finish();
             }

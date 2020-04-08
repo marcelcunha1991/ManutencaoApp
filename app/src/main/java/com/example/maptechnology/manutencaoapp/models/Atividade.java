@@ -8,8 +8,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-@SuppressWarnings("serial")
-public class Calendario implements Serializable {
+public class Atividade implements Serializable {
 
     @SerializedName("id")
     @Expose
@@ -23,36 +22,51 @@ public class Calendario implements Serializable {
     @SerializedName("dataInicio")
     @Expose
     private String dataInicio;
+    @SerializedName("dataInicioPausa")
+    @Expose
+    private String dataInicioPausa;
+    @SerializedName("dataFimPausa")
+    @Expose
+    private String dataFimPausa;
     @SerializedName("dataFim")
     @Expose
     private String dataFim;
     @SerializedName("tempoManutencao")
     @Expose
     private String tempoManutencao;
+    @SerializedName("observacao")
+    @Expose
+    private String observacao;
+    @SerializedName("custo")
+    @Expose
+    private float custo;
     @SerializedName("status")
     @Expose
     private Integer status;
     @SerializedName("idConjunto")
     @Expose
-    private String idConjunto;
+    private Conjunto idConjunto;
     @SerializedName("idSubConjunto")
     @Expose
-    private String idSubConjunto;
+    private SubConjunto idSubConjunto;
     @SerializedName("idPeca")
     @Expose
-    private String idPeca;
+    private Peca idPeca;
+    @SerializedName("idOrdem")
+    @Expose
+    private IdOrdem idOrdem;
     @SerializedName("manutencao")
     @Expose
-    private String manutencao;
+    private Manutencao manutencao;
     @SerializedName("responsavel")
     @Expose
-    private String responsavel;
+    private Responsavel responsavel;
     @SerializedName("realizadoPor")
     @Expose
-    private String realizadoPor;
+    private Responsavel realizadoPor;
     @SerializedName("falha")
     @Expose
-    private String falha;
+    private Falha falha;
 
     public Integer getId() {
         return id;
@@ -86,6 +100,22 @@ public class Calendario implements Serializable {
         this.dataInicio = dataInicio;
     }
 
+    public String getDataInicioPausa() {
+        return dataInicioPausa;
+    }
+
+    public void setDataInicioPausa(String dataInicioPausa) {
+        this.dataInicioPausa = dataInicioPausa;
+    }
+
+    public String getDataFimPausa() {
+        return dataFimPausa;
+    }
+
+    public void setDataFimPausa(String dataFimPausa) {
+        this.dataFimPausa = dataFimPausa;
+    }
+
     public String getDataFim() {
         return dataFim;
     }
@@ -102,6 +132,22 @@ public class Calendario implements Serializable {
         this.tempoManutencao = tempoManutencao;
     }
 
+    public String getObservacao() {
+        return observacao;
+    }
+
+    public void setObservacao(String observacao) {
+        this.observacao = observacao;
+    }
+
+    public float getCusto() {
+        return custo;
+    }
+
+    public void setCusto(float custo) {
+        this.custo = custo;
+    }
+
     public Integer getStatus() {
         return status;
     }
@@ -110,59 +156,68 @@ public class Calendario implements Serializable {
         this.status = status;
     }
 
-    public String getIdConjunto() {
+    public Conjunto getIdConjunto() {
         return idConjunto;
     }
 
-    public void setIdConjunto(String idConjunto) {
+    public void setIdConjunto(Conjunto idConjunto) {
         this.idConjunto = idConjunto;
     }
 
-    public String getIdSubConjunto() {
+    public SubConjunto getIdSubConjunto() {
         return idSubConjunto;
     }
 
-    public void setIdSubConjunto(String idSubConjunto) {
+    public void setIdSubConjunto(SubConjunto idSubConjunto) {
         this.idSubConjunto = idSubConjunto;
     }
 
-    public String getIdPeca() {
+    public Peca getIdPeca() {
         return idPeca;
     }
 
-    public void setIdPeca(String idPeca) {
+    public void setIdPeca(Peca idPeca) {
         this.idPeca = idPeca;
     }
 
-    public String getManutencao() {
+    public IdOrdem getIdOrdem() {
+        return idOrdem;
+    }
+
+    public void setIdOrdem(IdOrdem idOrdem) {
+        this.idOrdem = idOrdem;
+    }
+
+    public Manutencao getManutencao() {
         return manutencao;
     }
 
-    public void setManutencao(String manutencao) {
+    public void setManutencao(Manutencao manutencao) {
         this.manutencao = manutencao;
     }
 
-    public String getResponsavel() {
+    public Responsavel getResponsavel() {
         return responsavel;
     }
 
-    public void setResponsavel(String responsavel) {
+    public void setResponsavel(Responsavel responsavel) {
         this.responsavel = responsavel;
     }
 
-    public String getRealizadoPor() {
+    public Responsavel getRealizadoPor() {
         return realizadoPor;
     }
 
-    public void setRealizadoPor(String realizadoPor) {
+    public void setRealizadoPor(Responsavel realizadoPor) {
         this.realizadoPor = realizadoPor;
     }
 
-    public String getFalha() {
+    public Falha getFalha() {
         return falha;
     }
 
-    public void setFalha(String falha) {
+    public void setFalha(Falha falha) {
         this.falha = falha;
     }
+
 }

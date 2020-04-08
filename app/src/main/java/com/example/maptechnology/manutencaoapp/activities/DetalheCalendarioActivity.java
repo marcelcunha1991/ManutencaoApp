@@ -12,8 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.maptechnology.manutencaoapp.R;
-import com.example.maptechnology.manutencaoapp.models.Calendario;
-import com.example.maptechnology.manutencaoapp.models.Calendarios;
+import com.example.maptechnology.manutencaoapp.models.Atividade;
 import com.example.maptechnology.manutencaoapp.rest.RetrofitClass;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.gson.Gson;
@@ -30,7 +29,7 @@ public class DetalheCalendarioActivity extends AppCompatActivity {
     Gson gson;
     RetrofitClass apiService;
     Retrofit retrofit;
-    Calendario calendario;
+    Atividade calendario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +54,9 @@ public class DetalheCalendarioActivity extends AppCompatActivity {
         apiService = retrofit.create(RetrofitClass.class);
 
         Intent i = getIntent();
-        calendario = (Calendario) i.getSerializableExtra("calendario");
+        calendario = (Atividade) i.getSerializableExtra("calendario");
 
-        TextView txtManutencao = (TextView) findViewById(R.id.txtManutencao);
+        TextView txtManutencao = (TextView) findViewById(R.id.txtResponsavel);
         TextView txtItem = (TextView) findViewById(R.id.txtItem);
         TextView txtData = (TextView) findViewById(R.id.txtData);
         TextView txtDescricao = (TextView) findViewById(R.id.txtDescricao);
@@ -74,18 +73,18 @@ public class DetalheCalendarioActivity extends AppCompatActivity {
         });
 
 
-        txtManutencao.setText(calendario.getManutencao());
+        txtManutencao.setText(calendario.getManutencao().getDescricao());
         if(calendario.getIdConjunto() != null){
-            txtItem.setText(calendario.getIdConjunto());
+            txtItem.setText("Vazio");
         }else if (calendario.getIdSubConjunto() != null){
-            txtItem.setText(calendario.getIdSubConjunto());
+            txtItem.setText(calendario.getIdSubConjunto().getNome().toString());
         }else{
-            txtItem.setText(calendario.getIdPeca());
+            txtItem.setText("Vazio");
         }
         txtData.setText(calendario.getDataManutencao());
         txtDescricao.setText(calendario.getDescricao());
         txtcusto.setText("R$ 48,00");
-        txtResponsavel.setText(calendario.getResponsavel());
+        txtResponsavel.setText(calendario.getResponsavel().getUsername());
 
 
 
