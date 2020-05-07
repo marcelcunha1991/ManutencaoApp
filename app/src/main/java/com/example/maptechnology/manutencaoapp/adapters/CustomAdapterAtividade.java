@@ -1,6 +1,7 @@
 package com.example.maptechnology.manutencaoapp.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.maptechnology.manutencaoapp.R;
 import com.example.maptechnology.manutencaoapp.activities.AtividadesPorOrdemActivity;
+import com.example.maptechnology.manutencaoapp.activities.ObservaoCorretivaActivity;
 import com.example.maptechnology.manutencaoapp.models.Atividade;
 import com.example.maptechnology.manutencaoapp.models.Atividades;
 import com.example.maptechnology.manutencaoapp.rest.RetrofitClass;
@@ -139,7 +141,12 @@ public class CustomAdapterAtividade extends ArrayAdapter<Atividade> implements V
             result=convertView;
         }
 
-        viewHolder.txtDescricao.setText("Manutenção: "+dataModel.getManutencao().getDescricao());
+        if (dataModel.getManutencao() != null){
+            viewHolder.txtDescricao.setText("Manutenção: "+dataModel.getManutencao().getDescricao());
+        }else{
+            viewHolder.txtDescricao.setText("Manutenção: "+dataModel.getManutencaoCorretiva());
+        }
+
         if(dataModel.getIdConjunto() != null) {
             viewHolder.txtComp.setText("Onde: " + dataModel.getIdConjunto().getNome());
         }else if (dataModel.getIdSubConjunto() != null){
@@ -180,7 +187,7 @@ public class CustomAdapterAtividade extends ArrayAdapter<Atividade> implements V
     }
 
 
-    public void alteraStatus(Atividade atividade, int botao, int position){
+    public void alteraStatus(final Atividade atividade, final int botao, int position){
         // botao = 1 = play
         // botao = 2 = stop
 
@@ -205,9 +212,17 @@ public class CustomAdapterAtividade extends ArrayAdapter<Atividade> implements V
              call2 = apiService.alteraStatusAtividade(atividade.getId(), 2,     null, null, simpleDateFormat.format(currentTime),null);
 
         }else if(botao == 2){
-            atividade.setStatus(4);
-             call2 = apiService.alteraStatusAtividade(atividade.getId(), 4, null, null, null,simpleDateFormat.format(currentTime));
 
+            atividade.setStatus(4);
+            call2 = apiService.alteraStatusAtividade(atividade.getId(), 4, null, null, null,simpleDateFormat.format(currentTime));
+            Log.d("Status e tipo: ", String.valueOf(atividade.getStatus()) + " " + String.valueOf(atividade.getIdOrdem().getTipo()) );
+            if(atividade.getStatus() == 4){
+
+                Intent i = new Intent(activity,ObservaoCorretivaActivity.class);
+                i.putExtra("idAtividade",atividade.getId());
+                activity.startActivity(i);
+
+            }
         }
 
             call2.enqueue(new Callback<Atividades>() {
@@ -215,13 +230,19 @@ public class CustomAdapterAtividade extends ArrayAdapter<Atividade> implements V
                 @Override
                 public void onResponse(Call<Atividades> call, retrofit2.Response<Atividades> response) {
                     int statusCode = response.code();
+
                     Log.d("Retrofit Code: ", String.valueOf(statusCode));
 
                     Log.d("Retrofit Message: ", response.message());
-                    if (response.message().equals("200")) {
+
+                    Toast.makeText(mContext, "Resultado Toast: " + response.message(), Toast.LENGTH_SHORT).show();
+
+                    if (response.message().equals("OK")) {
 
                         Toast.makeText(mContext, "Atividade Atualizada", Toast.LENGTH_SHORT).show();
+
                         activity.chamadaAtividadesPorordem();
+
 
 
 

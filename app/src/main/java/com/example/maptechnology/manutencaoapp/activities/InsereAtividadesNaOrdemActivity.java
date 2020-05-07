@@ -3,12 +3,15 @@ package com.example.maptechnology.manutencaoapp.activities;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -16,6 +19,7 @@ import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
@@ -62,22 +66,24 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
     AllUsers listaUsuarios;
     Retrofit retrofit;
     RetrofitClass apiService;
+    EditText edtManutencao;
     ArrayAdapter<String> dataAdapterOnde;
 
     EditText edtDate;
 
     static final int PICK_CONTACT_REQUEST = 2;
 
-
     Spinner spnManutencao;
     Spinner spnOnde;
     Spinner spnResponsavel;
-    RadioButton rdbConjuntos;
+//    RadioButton rdbConjuntos;
     RadioButton rdbSubConjuntos;
     RadioButton rdbPecas;
     EditText edtHoraInicio;
     EditText edtHoraTermino;
     Switch swtJaRealizado;
+
+    int tipo;
 
 
     @Override
@@ -89,20 +95,23 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
         spnManutencao = (Spinner) findViewById(R.id.spnManutencao);
         spnOnde = (Spinner) findViewById(R.id.spnItem);
         spnResponsavel = (Spinner) findViewById(R.id.spnResponsavel);
-        rdbConjuntos = (RadioButton) findViewById(R.id.rdbConjuntos);
+//        rdbConjuntos = (RadioButton) findViewById(R.id.rdbConjuntos);
         rdbSubConjuntos = (RadioButton) findViewById(R.id.rdbSubConjuntos);
         rdbPecas = (RadioButton) findViewById(R.id.rdbPecas);
         edtDate = (EditText) findViewById(R.id.edtDate);
         edtHoraInicio = (EditText) findViewById(R.id.edtHoraInicio);
         edtHoraTermino = (EditText) findViewById(R.id.edtHoraTermino);
         swtJaRealizado = (Switch) findViewById(R.id.swtJaRealizada);
-
+        edtManutencao = (EditText)  findViewById(R.id.edtManutencao);
         Intent intent = getIntent();
+
         idOrdem = intent.getIntExtra("idOrdem",0);
+        tipo = intent.getIntExtra("tipo",0);
         descricaoOrdem = intent.getStringExtra("descricaoOrdem");
+
         setTitle(descricaoOrdem);
 
-        rdbConjuntos.setChecked(true);
+        rdbSubConjuntos.setChecked(true);
 
         swtJaRealizado.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -118,6 +127,8 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
         });
 
         edtHoraInicio.setEnabled(false);
+
+        habilitaManutencao();
 
         edtHoraInicio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -182,15 +193,15 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
             }
         });
 
-        rdbConjuntos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked == true){
-                    rdbConjuntos.setChecked(true);
-                    carregaConjuntos();
-                }
-            }
-        });
+//        rdbConjuntos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+//                if (isChecked == true){
+//                    rdbConjuntos.setChecked(true);
+//                    carregaConjuntos();
+//                }
+//            }
+//        });
 
         rdbPecas.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -231,8 +242,21 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
 
     }
 
+    private void habilitaManutencao() {
+
+        if (tipo == 2){
+            spnManutencao.setEnabled(false);
+        }else{
+            edtManutencao.setEnabled(false);
+        }
+    }
+
 
     private void populaSpinners() {
+
+        if (tipo != 2){
+
+
         Call<Manutencoes> call2 = apiService.detalheManutencao();
 
         call2.enqueue(new Callback<Manutencoes>() {
@@ -270,7 +294,7 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
                 Log.d("error", t.toString());
             }
         });
-
+        }
 
         carregaConjuntos();
 
@@ -444,6 +468,7 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
 
     }
 
+
     private void carregaAtividadesOrdem(){
 
         Call<Atividades> callSubConjuntos = apiService.atividadesPorOrdem(idOrdem);
@@ -460,12 +485,31 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
                     List<String> nomesSubConjuntos = new ArrayList<String>();
                     for(Atividade atividade:atividades.getAtividades()){
 
-                        nomesSubConjuntos.add(atividade.getManutencao().getDescricao() + "   Data: " + atividade.getDataManutencao() );
+                        if (tipo == 2){
+                            nomesSubConjuntos.add(atividade.getManutencaoCorretiva() + "   Data: " + atividade.getDataManutencao() );
+                        }else{
+                            nomesSubConjuntos.add(atividade.getManutencao().getDescricao() + "   Data: " + atividade.getDataManutencao() );
+                        }
+
 
                     }
 
                     ArrayAdapter<String> adapter = new ArrayAdapter<String>(getApplicationContext(),
-                        android.R.layout.simple_list_item_1, android.R.id.text1, nomesSubConjuntos);
+                        android.R.layout.simple_list_item_1, android.R.id.text1, nomesSubConjuntos){
+
+                        @Override
+                        public View getView(int position, View convertView, ViewGroup parent) {
+
+                            View view = super.getView(position, convertView, parent);
+                            TextView text = (TextView) view.findViewById(android.R.id.text1);
+
+
+                            text.setTextColor(Color.BLACK);
+
+
+                            return view;
+                        }
+                    };
 
                     listView.setAdapter(adapter);
 
@@ -518,100 +562,227 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
 
 
         if(!swtJaRealizado.isChecked()){
-            callSubConjuntos = apiService.criarAtividadeAgendada(
-                    edtDate.getText().toString(),
-                    manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId(),
-                    listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
-                    idOrdem,
-                    String.valueOf(pecas.getPecas().get(spnOnde.getSelectedItemPosition()).getId()),
-                    null,
-                    null,
-                    spnManutencao.getSelectedItem().toString()
 
-            );
+            if (tipo == 2){
+                callSubConjuntos = apiService.criarAtividadeAgendada(
+                        edtDate.getText().toString(),
+                        0,
+                        listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
+                        idOrdem,
+                        String.valueOf(pecas.getPecas().get(spnOnde.getSelectedItemPosition()).getId()),
+                        null,
+                        null,
+                        edtManutencao.getText().toString(),
+                        edtManutencao.getText().toString());
+            }else{
+
+                callSubConjuntos = apiService.criarAtividadeAgendada(
+                        edtDate.getText().toString(),
+                        manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId(),
+                        listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
+                        idOrdem,
+                        String.valueOf(pecas.getPecas().get(spnOnde.getSelectedItemPosition()).getId()),
+                        null,
+                        null,
+                        spnManutencao.getSelectedItem().toString(),
+                        null);
+
+            }
+
+
+
         }else{
-            callSubConjuntos = apiService.criarAtividadeRealizada(
-                    edtDate.getText().toString(),
-                    manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId(),
-                    listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
-                    idOrdem,
-                    String.valueOf(pecas.getPecas().get(spnOnde.getSelectedItemPosition()).getId()),
-                    null,
-                    null,
-                    horaInicio,
-                    horatermino,
-                    4,
-                    spnManutencao.getSelectedItem().toString()
 
-            );
+            if (tipo == 2){
+                callSubConjuntos = apiService.criarAtividadeRealizada(
+                        edtDate.getText().toString(),
+                        0,
+                        listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
+                        idOrdem,
+                        String.valueOf(pecas.getPecas().get(spnOnde.getSelectedItemPosition()).getId()),
+                        null,
+                        null,
+                        horaInicio,
+                        horatermino,
+                        4,
+                        edtManutencao.getText().toString(),
+                        edtManutencao.getText().toString()
+
+                );
+
+            }else{
+
+                callSubConjuntos = apiService.criarAtividadeRealizada(
+                        edtDate.getText().toString(),
+                        manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId(),
+                        listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
+                        idOrdem,
+                        String.valueOf(pecas.getPecas().get(spnOnde.getSelectedItemPosition()).getId()),
+                        null,
+                        null,
+                        horaInicio,
+                        horatermino,
+                        4,
+                        spnManutencao.getSelectedItem().toString(),
+                        null
+
+                );
+
+            }
+
         }
 
         }else if (rdbSubConjuntos.isChecked() == true) {
 
 
             if(!swtJaRealizado.isChecked()){
-                callSubConjuntos = apiService.criarAtividadeAgendada(
-                        edtDate.getText().toString(),
-                        manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId(),
-                        listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
-                        idOrdem,
-                        null,
-                        null,
-                        String.valueOf(subConjuntos.getSubconjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
-                        spnManutencao.getSelectedItem().toString()
 
-                );
+                if (tipo == 2){
+
+                    callSubConjuntos = apiService.criarAtividadeAgendada(
+                            edtDate.getText().toString(),
+                            0,
+                            listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
+                            idOrdem,
+                            null,
+                            null,
+                            String.valueOf(subConjuntos.getSubconjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
+                            edtManutencao.getText().toString(),
+                            edtManutencao.getText().toString()
+
+                    );
+
+                }else{
+                    callSubConjuntos = apiService.criarAtividadeAgendada(
+                            edtDate.getText().toString(),
+                            manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId(),
+                            listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
+                            idOrdem,
+                            null,
+                            null,
+                            String.valueOf(subConjuntos.getSubconjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
+                            spnManutencao.getSelectedItem().toString(),
+                            null
+
+                    );
+                }
+
             }else{
-                callSubConjuntos = apiService.criarAtividadeRealizada(
-                        edtDate.getText().toString(),
-                        manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId(),
-                        listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
-                        idOrdem,
-                        null,
-                        null,
-                        String.valueOf(subConjuntos.getSubconjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
-                        horaInicio,
-                        horatermino,
-                        4,
-                        spnManutencao.getSelectedItem().toString()
 
-                );
-            }
+                if (tipo == 2){
+                    callSubConjuntos = apiService.criarAtividadeRealizada(
+                            edtDate.getText().toString(),
+                            0,
+                            listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
+                            idOrdem,
+                            null,
+                            null,
+                            String.valueOf(subConjuntos.getSubconjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
+                            horaInicio,
+                            horatermino,
+                            4,
+                            edtManutencao.getText().toString(),
+                            edtManutencao.getText().toString()
+
+                    );
 
 
-        }else if (rdbConjuntos.isChecked() == true){
+                }else{
+                    callSubConjuntos = apiService.criarAtividadeRealizada(
+                            edtDate.getText().toString(),
+                            manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId(),
+                            listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
+                            idOrdem,
+                            null,
+                            null,
+                            String.valueOf(subConjuntos.getSubconjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
+                            horaInicio,
+                            horatermino,
+                            4,
+                            spnManutencao.getSelectedItem().toString(),
+                            null
 
-            if(!swtJaRealizado.isChecked()){
-                callSubConjuntos = apiService.criarAtividadeAgendada(
-                        edtDate.getText().toString(),
-                        manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId(),
-                        listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
-                        idOrdem,
-                        null,
-                        String.valueOf(conjuntos.getConjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
-                        null,
-                        spnManutencao.getSelectedItem().toString()
+                    );
+                }
 
-                );
-            }else{
-                callSubConjuntos = apiService.criarAtividadeRealizada(
-                        edtDate.getText().toString(),
-                        manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId(),
-                        listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
-                        idOrdem,
-                        null,
-                        String.valueOf(conjuntos.getConjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
-                        null,
-                        horaInicio,
-                        horatermino,
-                        4,
-                        spnManutencao.getSelectedItem().toString()
-
-                );
             }
 
 
         }
+//        else if (rdbConjuntos.isChecked() == true){
+//
+//            if(!swtJaRealizado.isChecked()){
+//
+//                if (tipo == 2){
+//                    callSubConjuntos = apiService.criarAtividadeAgendada(
+//                            edtDate.getText().toString(),
+//                            0,
+//                            listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
+//                            idOrdem,
+//                            null,
+//                            String.valueOf(conjuntos.getConjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
+//                            null,
+//                            edtManutencao.getText().toString(),
+//                            edtManutencao.getText().toString()
+//
+//                    );
+//
+//                }else{
+//                    callSubConjuntos = apiService.criarAtividadeAgendada(
+//                            edtDate.getText().toString(),
+//                            manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId(),
+//                            listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
+//                            idOrdem,
+//                            null,
+//                            String.valueOf(conjuntos.getConjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
+//                            null,
+//                            spnManutencao.getSelectedItem().toString(),
+//                            null
+//
+//                    );
+//                }
+//
+//
+//            }else{
+//                if (tipo == 2){
+//                    callSubConjuntos = apiService.criarAtividadeRealizada(
+//                            edtDate.getText().toString(),
+//                            0,
+//                            listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
+//                            idOrdem,
+//                            null,
+//                            String.valueOf(conjuntos.getConjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
+//                            null,
+//                            horaInicio,
+//                            horatermino,
+//                            4,
+//                            edtManutencao.getText().toString(),
+//                            edtManutencao.getText().toString()
+//
+//                    );
+//
+//                }else{
+//                    callSubConjuntos = apiService.criarAtividadeRealizada(
+//                            edtDate.getText().toString(),
+//                            manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId(),
+//                            listaUsuarios.getAllUsers().get(spnResponsavel.getSelectedItemPosition()).getId(),
+//                            idOrdem,
+//                            null,
+//                            String.valueOf(conjuntos.getConjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
+//                            null,
+//                            horaInicio,
+//                            horatermino,
+//                            4,
+//                            spnManutencao.getSelectedItem().toString(),
+//                            null
+//
+//                    );
+//                }
+//
+//            }
+//
+//
+//        }
 
 
         callSubConjuntos.enqueue(new Callback<Atividade>() {
@@ -650,13 +821,15 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
+        super.onActivityResult(requestCode, resultCode, data);
+
         if (requestCode == PICK_CONTACT_REQUEST) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 // The user picked a contact.
                 // The Intent's data Uri identifies which contact was selected.
 
-                String result=data.getStringExtra("data");
+                String result = data.getStringExtra("data");
 
                 edtDate.setText(result);
 

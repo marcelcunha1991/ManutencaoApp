@@ -13,9 +13,13 @@ public class Atividade implements Serializable {
     @SerializedName("id")
     @Expose
     private Integer id;
+
     @SerializedName("descricao")
     @Expose
     private String descricao;
+    @SerializedName("manutencaoCorretiva")
+    @Expose
+    private String manutencaoCorretiva;
     @SerializedName("dataManutencao")
     @Expose
     private String dataManutencao;
@@ -82,6 +86,15 @@ public class Atividade implements Serializable {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+
+    public String getManutencaoCorretiva() {
+        return manutencaoCorretiva;
+    }
+
+    public void setManutencaoCorretiva(String manutencaoCorretiva) {
+        this.manutencaoCorretiva = manutencaoCorretiva;
     }
 
     public String getDataManutencao() {

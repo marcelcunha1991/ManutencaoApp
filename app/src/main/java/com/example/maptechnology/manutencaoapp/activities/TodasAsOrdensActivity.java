@@ -2,7 +2,7 @@ package com.example.maptechnology.manutencaoapp.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -96,6 +96,7 @@ public class TodasAsOrdensActivity extends AppCompatActivity implements AdapterV
 
         Intent intent = new Intent(getApplicationContext(),AtividadesPorOrdemActivity.class);
         intent.putExtra("idOrdem",item.getId());
+        intent.putExtra("tipo",item.getTipo());
         startActivityForResult(intent,3);
 
     }

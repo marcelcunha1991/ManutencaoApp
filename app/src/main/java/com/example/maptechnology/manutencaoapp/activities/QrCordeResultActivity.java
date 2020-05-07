@@ -2,14 +2,16 @@ package com.example.maptechnology.manutencaoapp.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.maptechnology.manutencaoapp.R;
 import com.example.maptechnology.manutencaoapp.adapters.CustomAdapterOrdem;
 import com.example.maptechnology.manutencaoapp.models.OrdensDoDia;
+import com.example.maptechnology.manutencaoapp.models.QrCodeResult;
 import com.example.maptechnology.manutencaoapp.rest.RetrofitClass;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,16 +26,31 @@ public class QrCordeResultActivity extends AppCompatActivity {
     String url;
     Gson gson;
     RetrofitClass apiService;
-    OrdensDoDia lista;
+    QrCodeResult lista;
     Retrofit retrofit;
     SharedPreferences pref;
     String codigo;
+
+    TextView txtDescricao;
+    TextView txtMtbfAtual;
+    TextView txtMttrAtual;
+    TextView txtProxManuten;
+    TextView txtDataProx;
+    TextView txtUltimManut;
+    TextView txtDataUltimo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qr_corde_result);
 
+        txtDescricao = (TextView) findViewById(R.id.txtDescricao);
+        txtMtbfAtual = (TextView) findViewById(R.id.txtMtbfAtual);
+        txtMttrAtual = (TextView) findViewById(R.id.txtMttrAtual);
+        txtProxManuten = (TextView) findViewById(R.id.txtProxManuten);
+        txtDataProx = (TextView) findViewById(R.id.txtDataProx);
+        txtUltimManut = (TextView) findViewById(R.id.txtUltimManut);
+        txtDataUltimo = (TextView) findViewById(R.id.txtDataUltimo);
 
         codigo = getIntent().getStringExtra("code");
         pref = getApplicationContext().getSharedPreferences(getString(R.string.pref_key), 0); // 0 - for private mode
@@ -51,24 +68,31 @@ public class QrCordeResultActivity extends AppCompatActivity {
 
         apiService = retrofit.create(RetrofitClass.class);
 
-        carregaOrdem("");
+        carregaOrdem(codigo);
 
     }
 
     private void carregaOrdem(String data) {
 
-        Call<OrdensDoDia> call2 = apiService.detalheOrdemPorData(data);
+        Call<QrCodeResult> call2 = apiService.detalheQrCode(data);
 
-        call2.enqueue(new Callback<OrdensDoDia>() {
+        call2.enqueue(new Callback<QrCodeResult>() {
 
             @Override
-            public void onResponse(Call<OrdensDoDia> call, retrofit2.Response<OrdensDoDia> response) {
+            public void onResponse(Call<QrCodeResult> call, retrofit2.Response<QrCodeResult> response) {
                 int statusCode = response.code();
                 Log.d("Retrofit ", String.valueOf(statusCode));
                 lista = response.body();
 
                 if (response.message().equals("OK")) {
 
+                    txtDescricao.setText(lista.getDetalheQrCode().getNome());
+                    txtMtbfAtual.setText(lista.getDetalheQrCode().getMtbf());
+                    txtMttrAtual.setText(lista.getDetalheQrCode().getMttr());
+                    txtProxManuten.setText(lista.getOrdemProxima().getDescricao());
+                    txtDataProx. setText(lista.getAtividadeProx());
+                    txtUltimManut.setText(lista.getOrdemUltima().getDescricao());
+                    txtDataUltimo.setText(lista.getAtividadeUltimo());
 
 
 
@@ -79,7 +103,7 @@ public class QrCordeResultActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onFailure(Call<OrdensDoDia> call, Throwable t) {
+            public void onFailure(Call<QrCodeResult> call, Throwable t) {
                 // Log error here since request failed
                 Log.d("error", t.toString());
             }

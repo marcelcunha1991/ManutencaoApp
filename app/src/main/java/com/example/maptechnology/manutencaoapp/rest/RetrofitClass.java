@@ -7,6 +7,7 @@ import com.example.maptechnology.manutencaoapp.models.CalendarioDetalhe;
 import com.example.maptechnology.manutencaoapp.models.Atividades;
 import com.example.maptechnology.manutencaoapp.models.CincoPorques;
 import com.example.maptechnology.manutencaoapp.models.Conjuntos;
+import com.example.maptechnology.manutencaoapp.models.Estoque;
 import com.example.maptechnology.manutencaoapp.models.Falhas;
 import com.example.maptechnology.manutencaoapp.models.IdArea;
 import com.example.maptechnology.manutencaoapp.models.IdOrdem;
@@ -14,6 +15,7 @@ import com.example.maptechnology.manutencaoapp.models.OrdemManutencao;
 import com.example.maptechnology.manutencaoapp.models.Peca;
 import com.example.maptechnology.manutencaoapp.models.Pecas;
 import com.example.maptechnology.manutencaoapp.models.Porques;
+import com.example.maptechnology.manutencaoapp.models.QrCodeResult;
 import com.example.maptechnology.manutencaoapp.models.SubConjunto;
 import com.example.maptechnology.manutencaoapp.models.Manutencoes;
 import com.example.maptechnology.manutencaoapp.models.OrdensDoDia;
@@ -25,6 +27,8 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 /**
  * Created by MAPTECHNOLOGY on 22/02/2019.
@@ -49,6 +53,8 @@ public interface RetrofitClass {
     Call<Usuario> logar(@Field("matricula") String matricula ,
                                   @Field("senha") String senha
     );
+
+
 
     @FormUrlEncoded
     @POST("atividadeOrdem/detalheCalendarioPorData/")
@@ -77,7 +83,8 @@ public interface RetrofitClass {
                                          @Field("idPeca") String idPeca,
                                          @Field("idConjunto") String idConjunto,
                                          @Field("idSubConjunto") String idSubConjunto,
-                                         @Field("descricao") String descricao
+                                         @Field("descricao") String descricao,
+                                         @Field("manutencaoCorretiva") String manutencaoCorretiva
                                    );
 
     @FormUrlEncoded
@@ -93,7 +100,8 @@ public interface RetrofitClass {
             @Field("dataInicio") String dataInicio,
             @Field("dataFim") String dataFim,
             @Field("status") int status,
-            @Field("descricao") String descricao
+            @Field("descricao") String descricao,
+            @Field("manutencaoCorretiva") String manutencaoCorretiva
 
 
 
@@ -108,7 +116,7 @@ public interface RetrofitClass {
                              @Field("responsavelCriacao") int responsavelCriacao,
                              @Field("tipo") int tipo,
                              @Field("status")int status,
-                             @Field("falha") int falha,
+                             @Field("falha") String falha,
                              @Field("area") int area,
                              @Field("conjunto") int conjunto);
 
@@ -128,13 +136,17 @@ public interface RetrofitClass {
                                  @Field("status") int status);
 
     @FormUrlEncoded
+    @POST("ordem/remover/")
+    Call<Void> removeOrdem(@Field("id") int id);
+
+    @FormUrlEncoded
     @POST("ordem/criaCincoPorque/")
     Call<CincoPorques> criarCincoPorques(@Field("idOrdem") int idOrdem,
-                                         @Field("primeiroPorque") int primeiroPorque,
-                                         @Field("segundoPorque") int segundoPorque,
-                                         @Field("terceiroPorque") int terceiroPorque,
-                                         @Field("quartoPorque") int quartoPorque,
-                                         @Field("quintoPorque") int quintoPorque
+                                         @Field("primeiroPorque") String primeiroPorque,
+                                         @Field("segundoPorque") String segundoPorque,
+                                         @Field("terceiroPorque") String terceiroPorque,
+                                         @Field("quartoPorque") String quartoPorque,
+                                         @Field("quintoPorque") String quintoPorque
                                  );
 
     @GET("usuario/listaUsuarios/")
@@ -142,6 +154,11 @@ public interface RetrofitClass {
 
     @POST("porques/detalhe/")
     Call<Porques> getPorques();
+
+    @POST("estoque/detalhe/")
+    Call<Estoque> getEstoque();
+
+
 
     @POST("falhas/detalhe/")
     Call<Falhas> getFalhas();
@@ -176,4 +193,13 @@ public interface RetrofitClass {
 
     @POST("pecas/detalhe/")
     Call<Pecas> detalhePecas();
+
+    @GET("ordem/detalheQrCode/")
+    Call<QrCodeResult> detalheQrCode(@Query("code") String code);
+
+    @FormUrlEncoded
+    @POST("itenscorretivos/criar/")
+    Call<Void> itensCorretivosCriar(@Field("atividade") int atividade,
+                                     @Field("itemEstoque") int itemEstoque,
+                                     @Field("quantidade") int quantidade);
 }

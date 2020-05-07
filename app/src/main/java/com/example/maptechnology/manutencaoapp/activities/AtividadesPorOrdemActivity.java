@@ -2,8 +2,8 @@ package com.example.maptechnology.manutencaoapp.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -18,6 +18,7 @@ import com.example.maptechnology.manutencaoapp.application.AppApplication;
 import com.example.maptechnology.manutencaoapp.models.Atividade;
 import com.example.maptechnology.manutencaoapp.models.Atividades;
 import com.example.maptechnology.manutencaoapp.rest.RetrofitClass;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -38,6 +39,7 @@ public class AtividadesPorOrdemActivity extends AppCompatActivity {
     Retrofit retrofit;
     RetrofitClass apiService;
     int idOrdem;
+    int tipo;
     Atividades lista;
 
     @Override
@@ -47,6 +49,7 @@ public class AtividadesPorOrdemActivity extends AppCompatActivity {
 
         Intent i = getIntent();
         idOrdem = i.getIntExtra("idOrdem",0);
+        tipo = i.getIntExtra("tipo",0);
 
         listView = (ListView) findViewById(R.id.list);
 
@@ -59,6 +62,7 @@ public class AtividadesPorOrdemActivity extends AppCompatActivity {
 
                 Intent i = new Intent(getApplicationContext(),InsereAtividadesNaOrdemActivity.class);
                 i.putExtra("idOrdem",idOrdem);
+                i.putExtra("tipo",tipo);
                 startActivity(i);
 
             }

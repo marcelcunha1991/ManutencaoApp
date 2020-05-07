@@ -1,7 +1,8 @@
 package com.example.maptechnology.manutencaoapp.adapters;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
+
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,13 +11,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+
 import com.example.maptechnology.manutencaoapp.R;
+import com.example.maptechnology.manutencaoapp.activities.AceitaSolicitacoesAcitivity;
+import com.example.maptechnology.manutencaoapp.models.Atividades;
 import com.example.maptechnology.manutencaoapp.models.IdOrdem;
 import com.example.maptechnology.manutencaoapp.rest.RetrofitClass;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
 import retrofit2.Retrofit;
 
 public class CustomAdapterAceitaAtividades extends ArrayAdapter<IdOrdem> implements View.OnClickListener {
@@ -28,6 +35,7 @@ public class CustomAdapterAceitaAtividades extends ArrayAdapter<IdOrdem> impleme
     RetrofitClass apiService;
     int status = 0;
     ViewHolder viewHolder;
+    AceitaSolicitacoesAcitivity activity;
 
     private static class ViewHolder {
         TextView txtDescricao;
@@ -42,13 +50,14 @@ public class CustomAdapterAceitaAtividades extends ArrayAdapter<IdOrdem> impleme
         super(context, resource);
     }
 
-    public CustomAdapterAceitaAtividades(ArrayList<IdOrdem> data, Context context, Gson gson, RetrofitClass apiService, Retrofit retrofit) {
+    public CustomAdapterAceitaAtividades(ArrayList<IdOrdem> data, Context context, Gson gson, RetrofitClass apiService, Retrofit retrofit, AceitaSolicitacoesAcitivity activity) {
         super(context, R.layout.row_list_aceite_ordens, data);
         this.dataSet = data;
         this.mContext=context;
         this.gson = gson;
         this.retrofit = retrofit;
         this.apiService = apiService;
+        this.activity = activity;
 
 
 
@@ -69,6 +78,7 @@ public class CustomAdapterAceitaAtividades extends ArrayAdapter<IdOrdem> impleme
         final View result;
 
         if (convertView == null) {
+
             status = dataModel.getStatus();
             viewHolder = new CustomAdapterAceitaAtividades.ViewHolder();
             LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -86,9 +96,7 @@ public class CustomAdapterAceitaAtividades extends ArrayAdapter<IdOrdem> impleme
                 @Override
                 public void onClick(View v) {
 
-                    Toast.makeText(mContext,"Teste "+ String.valueOf(position),Toast.LENGTH_SHORT).show();
-
-//                    alteraStatus(dataModel,1,position);
+                    AlteraStatus(dataModel);
 
                 }
             });
@@ -98,11 +106,7 @@ public class CustomAdapterAceitaAtividades extends ArrayAdapter<IdOrdem> impleme
                 @Override
                 public void onClick(View v) {
 
-                    Toast.makeText(mContext,"Teste " +String.valueOf(position),Toast.LENGTH_SHORT).show();
-//                    alteraStatus(dataModel,2,position);
-
-
-
+                    DeleteSolitacao(dataModel);
                 }
             });
 
@@ -117,7 +121,7 @@ public class CustomAdapterAceitaAtividades extends ArrayAdapter<IdOrdem> impleme
         }
 
         viewHolder.txtDescricao.setText("Descrição: "+dataModel.getDescricao());
-        viewHolder.txtFalha.setText("Falha: " + dataModel.getFalha().getDescricao());
+        viewHolder.txtFalha.setText("Falha: " + dataModel.getFalha());
         viewHolder.txtDataCriacao.setText("Criado em: " + dataModel.getDataCriacao());
         viewHolder.txtResponsavel.setText("Responsavel: " + String.valueOf(dataModel.getResponsavelCriacao().getUsername()));
 
@@ -133,5 +137,69 @@ public class CustomAdapterAceitaAtividades extends ArrayAdapter<IdOrdem> impleme
     @Override
     public void onClick(View v) {
 
+    }
+
+    public void AlteraStatus(IdOrdem ordem){
+
+        Call<Void> call2 = apiService.alteraOrdemStatus(ordem.getId(),2);
+
+        call2.enqueue(new Callback<Void>() {
+
+            @Override
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+                int statusCode = response.code();
+                Log.d("Retrofit Code: ", String.valueOf(statusCode));
+
+                Log.d("Retrofit Message: ", response.message());
+                if (response.message().equals("OK")) {
+
+                    Toast.makeText(mContext, "Ordem Aceita", Toast.LENGTH_SHORT).show();
+                    activity.AceitaSolicitacaoDeOrdem();
+
+                } else {
+
+                    Toast.makeText(mContext, "Erro ao Atualizar", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Log error here since request failed
+                Log.d("error", t.toString());
+            }
+        });
+    }
+
+
+    public void DeleteSolitacao(IdOrdem ordem){
+
+        Call<Void> call2 = apiService.removeOrdem(ordem.getId());
+
+        call2.enqueue(new Callback<Void>() {
+
+            @Override
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+                int statusCode = response.code();
+                Log.d("Retrofit Code: ", String.valueOf(statusCode));
+
+                Log.d("Retrofit Message: ", response.message());
+
+                if (response.message().equals("OK")) {
+
+                    Toast.makeText(mContext, "Solicitação removida", Toast.LENGTH_SHORT).show();
+                    activity.AceitaSolicitacaoDeOrdem();
+
+                } else {
+
+                    Toast.makeText(mContext, "Erro ao Atualizar", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Log error here since request failed
+                Log.d("error", t.toString());
+            }
+        });
     }
 }

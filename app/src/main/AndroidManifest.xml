@@ -18,24 +18,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/tema">
-        <activity android:name=".activities.chuveiroActivity"></activity>
+        <activity android:name=".activities.ObservaoCorretivaActivity"></activity>
         <activity android:name=".activities.QrCordeResultActivity" />
         <activity
             android:name=".activities.CincoPorquesActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="fullSensor" />
         <activity android:name=".activities.AceitaSolicitacoesAcitivity" />
         <activity android:name=".activities.TodasAsOrdensActivity" />
         <activity android:name=".activities.InsereAtividadesNaOrdemActivity" />
         <activity
             android:name=".activities.CriarOrdemActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="fullSensor"
             android:theme="@style/tema" />
         <activity
             android:name=".activities.AtividadesPorOrdemActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="fullSensor" />
         <activity
             android:name=".activities.CalendarActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="fullSensor" />
 
         <meta-data
             android:name="com.google.android.gms.vision.DEPENDENCIES"
@@ -52,17 +52,17 @@
         </activity>
         <activity
             android:name=".activities.OrdensDoDiaActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="fullSensor"
             android:theme="@style/tema" />
         <activity android:name=".activities.LoginWhirlpool" />
         <activity
             android:name=".activities.DetalheCalendarioActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="fullSensor" />
         <activity android:name=".activities.QrCodeReaderActivity" />
         <activity
             android:name=".qrcodereader.barcode.BarcodeCaptureActivity"
             android:label="Read Barcode"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="fullSensor" />
     </application>
 
 </manifest>

@@ -2,7 +2,7 @@ package com.example.maptechnology.manutencaoapp.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -49,7 +49,7 @@ public class CriarOrdemActivity extends AppCompatActivity {
     EditText edtFrequencia;
     Spinner spnFrequencia;
     Spinner spnTipo;
-    Spinner spnFalhas;
+    EditText edtFalha;
     Spinner spnConjunto;
     Spinner spnArea;
     Switch swithch1;
@@ -98,10 +98,16 @@ public class CriarOrdemActivity extends AppCompatActivity {
         user_id = preferences.getInt(getString(R.string.user_id),0);
         hierarquia = preferences.getString(getString(R.string.hierarquia),"");
 
+        if (hierarquia.equals("3")){
+            setTitle("Solicitação de Ordem");
+        }else{
+            setTitle("Criação de Ordem");
+        }
+
         edtDescricao = (EditText) findViewById(R.id.edtOrdemDescricao);
         edtFrequencia = (EditText) findViewById(R.id.edtFrequencia);
         spnFrequencia = (Spinner) findViewById(R.id.spnFrenquencia);
-        spnFalhas = (Spinner) findViewById(R.id.spnFalhas);
+        edtFalha = (EditText) findViewById(R.id.edtFalha);
         spnTipo = (Spinner) findViewById(R.id.spnTipo);
         spnConjunto = (Spinner) findViewById(R.id.spnConjunto);
         spnArea = (Spinner) findViewById(R.id.spnArea);
@@ -171,7 +177,7 @@ public class CriarOrdemActivity extends AppCompatActivity {
                 if (response.message().equals("OK")) {
 
                         edtDescricao.setText(ordem.getOrdem().getDescricao());
-                        spnTipo.setSelection(retornaPosicaoSpinnerFalhas(ordem.getOrdem().getFalha().getDescricao()));
+                        spnTipo.setSelection(retornaPosicaoSpinnerFalhas(ordem.getOrdem().getFalha()));
 
 
                 } else {
@@ -233,12 +239,6 @@ public class CriarOrdemActivity extends AppCompatActivity {
                         listaFalhas.add(falha.getDescricao());
                     }
 
-                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
-                            R.layout.spinner_layout, listaFalhas);
-
-
-
-                    spnFalhas.setAdapter(dataAdapter);
 //                    if ()
 //                    spnFalhas.setSelection(retornaPosicaoSpinnerFalhas(ordem.getOrdem().getFalha().getDescricao()));
 
@@ -364,7 +364,7 @@ public class CriarOrdemActivity extends AppCompatActivity {
                 retorno = Integer.valueOf(edtFrequencia.getText().toString()) * 86400;
             } else if (spnTipo.getSelectedItem().toString().equals("Mês")) {
                 retorno = Integer.valueOf(edtFrequencia.getText().toString()) * 2419200;
-            } else if (spnTipo.getSelectedItem().toString().equals("Mês")) {
+            } else if (spnTipo.getSelectedItem().toString().equals("Ano")) {
                 retorno = Integer.valueOf(edtFrequencia.getText().toString()) * 29030400;
             }
         }
@@ -385,9 +385,6 @@ public class CriarOrdemActivity extends AppCompatActivity {
         Log.d("data ", simpleDateFormat.format(currentTime));
         Log.d("user_id ", String.valueOf(user_id));
 
-
-
-
         int frequenciaManutencao;
         if(swithch1.isChecked()){
             frequenciaManutencao = returnDate();
@@ -403,7 +400,7 @@ public class CriarOrdemActivity extends AppCompatActivity {
                 user_id,
                 tipos.get(spnTipo.getSelectedItem().toString()),
                 status,
-                falhas.getFalhas().get(spnFalhas.getSelectedItemPosition()).getId(),
+                edtFalha.getText().toString(),
                 areas.getArea().get(spnArea.getSelectedItemPosition()).getId(),
                 conjuntosPorArea.getConjuntos().get(spnConjunto.getSelectedItemPosition()).getId()
                 );

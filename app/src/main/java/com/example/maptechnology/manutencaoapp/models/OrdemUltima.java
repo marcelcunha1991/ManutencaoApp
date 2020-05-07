@@ -3,10 +3,7 @@ package com.example.maptechnology.manutencaoapp.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import java.io.Serializable;
-import java.util.List;
-
-public class IdOrdem implements Serializable {
+public class OrdemUltima {
 
     @SerializedName("id")
     @Expose
@@ -25,25 +22,28 @@ public class IdOrdem implements Serializable {
     private String tempoTotalManutencao;
     @SerializedName("frequenciaManutencao")
     @Expose
-    private int frequenciaManutencao;
+    private Integer frequenciaManutencao;
     @SerializedName("tipo")
     @Expose
-    private int tipo;
+    private Integer tipo;
     @SerializedName("status")
     @Expose
-    private int status;
-    @SerializedName("responsavelCriacao")
-    @Expose
-    private Responsavel responsavelCriacao;
+    private Integer status;
     @SerializedName("falha")
     @Expose
     private String falha;
+    @SerializedName("isParada")
+    @Expose
+    private Boolean isParada;
+    @SerializedName("responsavelCriacao")
+    @Expose
+    private Integer responsavelCriacao;
     @SerializedName("area")
     @Expose
-    private IdArea area;
+    private Integer area;
     @SerializedName("conjunto")
     @Expose
-    private Conjunto conjunto;
+    private Integer conjunto;
 
     public Integer getId() {
         return id;
@@ -85,28 +85,12 @@ public class IdOrdem implements Serializable {
         this.tempoTotalManutencao = tempoTotalManutencao;
     }
 
-    public int getFrequenciaManutencao() {
+    public Integer getFrequenciaManutencao() {
         return frequenciaManutencao;
     }
 
-    public void setFrequenciaManutencao(int frequenciaManutencao) {
+    public void setFrequenciaManutencao(Integer frequenciaManutencao) {
         this.frequenciaManutencao = frequenciaManutencao;
-    }
-
-    public int  getStatus() {
-        return status;
-    }
-
-    public void setStatus(int  status) {
-        this.status = status;
-    }
-
-    public Responsavel getResponsavelCriacao() {
-        return responsavelCriacao;
-    }
-
-    public void setResponsavelCriacao(Responsavel responsavelCriacao) {
-        this.responsavelCriacao = responsavelCriacao;
     }
 
     public Integer getTipo() {
@@ -117,6 +101,13 @@ public class IdOrdem implements Serializable {
         this.tipo = tipo;
     }
 
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
     public String getFalha() {
         return falha;
@@ -126,19 +117,36 @@ public class IdOrdem implements Serializable {
         this.falha = falha;
     }
 
-    public IdArea getArea() {
+    public Boolean getIsParada() {
+        return isParada;
+    }
+
+    public void setIsParada(Boolean isParada) {
+        this.isParada = isParada;
+    }
+
+    public Integer getResponsavelCriacao() {
+        return responsavelCriacao;
+    }
+
+    public void setResponsavelCriacao(Integer responsavelCriacao) {
+        this.responsavelCriacao = responsavelCriacao;
+    }
+
+    public Integer getArea() {
         return area;
     }
 
-    public void setArea(IdArea area) {
+    public void setArea(Integer area) {
         this.area = area;
     }
 
-    public Conjunto getConjunto() {
+    public Integer getConjunto() {
         return conjunto;
     }
 
-    public void setConjunto(Conjunto conjunto) {
+    public void setConjunto(Integer conjunto) {
         this.conjunto = conjunto;
     }
+
 }

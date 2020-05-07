@@ -2,8 +2,7 @@ package com.example.maptechnology.manutencaoapp.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -22,6 +21,7 @@ import com.example.maptechnology.manutencaoapp.qrcodereader.barcode.BarcodeCaptu
 import com.example.maptechnology.manutencaoapp.rest.RetrofitClass;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -50,7 +50,7 @@ public class OrdensDoDiaActivity extends AppCompatActivity implements AdapterVie
     Menu menu;
     String hierarquia;
     SharedPreferences pref;
-     int retorno = 0 ;
+    int retorno = 0 ;
 
 
     @Override
@@ -107,9 +107,6 @@ public class OrdensDoDiaActivity extends AppCompatActivity implements AdapterVie
 
             }
         });
-//
-
-
 
         final SharedPreferences.Editor editor = pref.edit();
 
@@ -257,9 +254,8 @@ public class OrdensDoDiaActivity extends AppCompatActivity implements AdapterVie
 
         }else if (id == R.id.alert) {
 
-
-            ChamadaOrdensDoDia(returnData());
-
+            Intent i = new Intent(this, AceitaSolicitacoesAcitivity.class);
+            startActivity(i);
             return true;
 
 
@@ -275,6 +271,7 @@ public class OrdensDoDiaActivity extends AppCompatActivity implements AdapterVie
 
         Intent intent = new Intent(getApplicationContext(),AtividadesPorOrdemActivity.class);
         intent.putExtra("idOrdem",item.getId());
+        intent.putExtra("tipo",item.getTipo());
         startActivityForResult(intent,3);
     }
 
@@ -342,6 +339,8 @@ public class OrdensDoDiaActivity extends AppCompatActivity implements AdapterVie
             }
         });
     }
+
+
 
 
 }

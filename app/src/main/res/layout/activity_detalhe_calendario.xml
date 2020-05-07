@@ -9,7 +9,7 @@
     android:fadeScrollbars="false"
     android:scrollbars="vertical" >
 
-<android.support.constraint.ConstraintLayout
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.example.maptechnology.manutencaoapp.activities.DetalheCalendarioActivity">
@@ -270,6 +270,6 @@
         app:layout_constraintTop_toBottomOf="@+id/edtObservacao"
         app:layout_constraintVertical_bias="0.234" />
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>
