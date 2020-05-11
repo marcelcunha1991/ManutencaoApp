@@ -191,8 +191,16 @@ public interface RetrofitClass {
     @POST("subConjuntos/detalhe/")
     Call<SubConjuntos> detalheSubConjuntos();
 
+    @FormUrlEncoded
+    @POST("subConjuntos/detalhe/")
+    Call<SubConjuntos> detalheSubConjuntosPorConjunto(@Field("idConjunto") int id);
+
     @POST("pecas/detalhe/")
     Call<Pecas> detalhePecas();
+
+    @FormUrlEncoded
+    @POST("pecas/detalhe/")
+    Call<Pecas> detalhePecasPorConjunto(@Field("idConjunto") int id);
 
     @GET("ordem/detalheQrCode/")
     Call<QrCodeResult> detalheQrCode(@Query("code") String code);

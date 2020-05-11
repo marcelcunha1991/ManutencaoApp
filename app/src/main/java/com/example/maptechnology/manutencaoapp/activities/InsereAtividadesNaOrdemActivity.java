@@ -54,6 +54,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
 
     int idOrdem;
+    int conjunto;
     String descricaoOrdem;
     ListView listView;
     String url;
@@ -107,6 +108,8 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
 
         idOrdem = intent.getIntExtra("idOrdem",0);
         tipo = intent.getIntExtra("tipo",0);
+        conjunto = intent.getIntExtra("conjunto",0);
+
         descricaoOrdem = intent.getStringExtra("descricaoOrdem");
 
         setTitle(descricaoOrdem);
@@ -252,6 +255,8 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
     }
 
 
+
+
     private void populaSpinners() {
 
         if (tipo != 2){
@@ -296,7 +301,7 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
         });
         }
 
-        carregaConjuntos();
+        carregaSubConjuntos();
 
 
         Call<AllUsers> callResponsavel = apiService.listaUsuarios();
@@ -384,7 +389,7 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
 
     private void carregaPecas(){
 
-        Call<Pecas> callPecas = apiService.detalhePecas();
+        Call<Pecas> callPecas = apiService.detalhePecasPorConjunto(conjunto);
 
         callPecas.enqueue(new Callback<Pecas>() {
 
@@ -426,7 +431,7 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
 
     private void carregaSubConjuntos(){
 
-        Call<SubConjuntos> callSubConjuntos = apiService.detalheSubConjuntos();
+        Call<SubConjuntos> callSubConjuntos = apiService.detalheSubConjuntosPorConjunto(conjunto);
 
         callSubConjuntos.enqueue(new Callback<SubConjuntos>() {
 

@@ -97,6 +97,7 @@ public class TodasAsOrdensActivity extends AppCompatActivity implements AdapterV
         Intent intent = new Intent(getApplicationContext(),AtividadesPorOrdemActivity.class);
         intent.putExtra("idOrdem",item.getId());
         intent.putExtra("tipo",item.getTipo());
+        intent.putExtra("conjunto",item.getConjunto().getId());
         startActivityForResult(intent,3);
 
     }

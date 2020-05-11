@@ -40,6 +40,7 @@ public class AtividadesPorOrdemActivity extends AppCompatActivity {
     RetrofitClass apiService;
     int idOrdem;
     int tipo;
+    int conjunto;
     Atividades lista;
 
     @Override
@@ -50,6 +51,7 @@ public class AtividadesPorOrdemActivity extends AppCompatActivity {
         Intent i = getIntent();
         idOrdem = i.getIntExtra("idOrdem",0);
         tipo = i.getIntExtra("tipo",0);
+        conjunto  = i.getIntExtra("conjunto",0);
 
         listView = (ListView) findViewById(R.id.list);
 
@@ -63,6 +65,7 @@ public class AtividadesPorOrdemActivity extends AppCompatActivity {
                 Intent i = new Intent(getApplicationContext(),InsereAtividadesNaOrdemActivity.class);
                 i.putExtra("idOrdem",idOrdem);
                 i.putExtra("tipo",tipo);
+                i.putExtra("conjunto",conjunto);
                 startActivity(i);
 
             }
