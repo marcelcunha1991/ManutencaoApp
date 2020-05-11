@@ -15,6 +15,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.maptechnology.manutencaoapp.R;
@@ -53,6 +54,8 @@ public class CriarOrdemActivity extends AppCompatActivity {
     Spinner spnConjunto;
     Spinner spnArea;
     Switch swithch1;
+    TextView textView22;
+    TextView textView23;
     Falhas falhas;
     OrdemManutencao ordem;
     Areas areas;
@@ -98,11 +101,7 @@ public class CriarOrdemActivity extends AppCompatActivity {
         user_id = preferences.getInt(getString(R.string.user_id),0);
         hierarquia = preferences.getString(getString(R.string.hierarquia),"");
 
-        if (hierarquia.equals("3")){
-            setTitle("Solicitação de Ordem");
-        }else{
-            setTitle("Criação de Ordem");
-        }
+
 
         edtDescricao = (EditText) findViewById(R.id.edtOrdemDescricao);
         edtFrequencia = (EditText) findViewById(R.id.edtFrequencia);
@@ -112,15 +111,36 @@ public class CriarOrdemActivity extends AppCompatActivity {
         spnConjunto = (Spinner) findViewById(R.id.spnConjunto);
         spnArea = (Spinner) findViewById(R.id.spnArea);
         swithch1 = (Switch) findViewById(R.id.switch1);
-        swithch1.setChecked(true);
+
+        textView22 = (TextView) findViewById(R.id.textView22);
+        textView23 = (TextView) findViewById(R.id.textView23);
+
+        textView22.setText("Linha: ");
+        textView23.setText("Máqina: ");
+        swithch1.setChecked(false) ;
+
+        if (hierarquia.equals("3")){
+            setTitle("Solicitação de Ordem");
+            swithch1.setEnabled(false);
+            spnTipo.setEnabled(false);
+            edtFrequencia.setEnabled(false);
+            spnFrequencia.setEnabled(false);
+
+
+        }else{
+            setTitle("Criação de Ordem");
+        }
 
         swithch1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked == false){
                     edtFrequencia.setEnabled(false);
+                    spnFrequencia.setEnabled(false);
+
                 }else{
                     edtFrequencia.setEnabled(true);
+                    spnFrequencia.setEnabled(true);
                 }
             }
         });
