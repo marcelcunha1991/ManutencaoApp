@@ -67,7 +67,7 @@ public class QrCordeResultActivity extends AppCompatActivity {
                 .build();
 
         apiService = retrofit.create(RetrofitClass.class);
-
+        Log.d("code :", codigo);
         carregaOrdem(codigo);
 
     }
@@ -89,10 +89,13 @@ public class QrCordeResultActivity extends AppCompatActivity {
                     txtDescricao.setText(lista.getDetalheQrCode().getNome());
                     txtMtbfAtual.setText(lista.getDetalheQrCode().getMtbf());
                     txtMttrAtual.setText(lista.getDetalheQrCode().getMttr());
-                    txtProxManuten.setText(lista.getOrdemProxima().getDescricao());
-                    txtDataProx. setText(lista.getAtividadeProx());
-                    txtUltimManut.setText(lista.getOrdemUltima().getDescricao());
-                    txtDataUltimo.setText(lista.getAtividadeUltimo());
+
+                    if(lista.getOrdemProxima() != null) txtProxManuten.setText(lista.getOrdemProxima().getDescricao());
+
+                    if(lista.getAtividadeProx() != null)  txtDataProx. setText(lista.getAtividadeProx());
+
+                    if(lista.getOrdemUltima() != null) txtUltimManut.setText(lista.getOrdemUltima().getDescricao());
+                    if(lista.getAtividadeUltimo() != null) txtDataUltimo.setText(lista.getAtividadeUltimo());
 
 
 

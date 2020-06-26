@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:fadeScrollbars="false"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".activities.CincoPorquesActivity">
 
     <TextView
@@ -72,11 +78,12 @@
         android:id="@+id/textView27"
         android:layout_width="91dp"
         android:layout_height="27dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="36dp"
         android:layout_marginEnd="64dp"
         android:text="Porque?"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@+id/textView26"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView26" />
 
     <EditText
@@ -141,3 +148,5 @@
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

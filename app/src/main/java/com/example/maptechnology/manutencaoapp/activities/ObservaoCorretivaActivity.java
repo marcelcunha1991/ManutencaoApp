@@ -197,6 +197,42 @@ public class ObservaoCorretivaActivity extends AppCompatActivity {
 
     private void salvarObservacao() {
 
+        if(!edtObservacao.getText().toString().equals("")){
+
+
+        Call<Void> call3 = apiService.insereObservacaoNaAtividade(
+                idAtividade,
+                edtObservacao.getText().toString());
+
+        call3.enqueue(new Callback<Void>() {
+
+            @Override
+            public void onResponse(Call<Void> call, retrofit2.Response<Void> response) {
+                int statusCode = response.code();
+                Log.d("Retrofit ", String.valueOf(statusCode));
+
+                if (response.message().equals("OK")) {
+
+                    Toast.makeText(getApplicationContext(), "Observacao Inserida", Toast.LENGTH_SHORT).show();
+
+
+                } else {
+
+                    Toast.makeText(getApplicationContext(), "Não foi possível inserir a observação", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                // Log error here since request failed
+                Log.d("error", t.toString());
+            }
+        });
+
+        }
+
+
+
         for(int i=0;i<listaDeEstoque.size();i++){
 
             Call<Void> call2 = apiService.itensCorretivosCriar(
@@ -218,6 +254,7 @@ public class ObservaoCorretivaActivity extends AppCompatActivity {
                     } else {
 
                         Toast.makeText(getApplicationContext(), "Não foi possível acessar as Ordens de Manutenção", Toast.LENGTH_SHORT).show();
+                        finish();
                     }
                 }
 
@@ -229,6 +266,7 @@ public class ObservaoCorretivaActivity extends AppCompatActivity {
             });
         }
 
+        finish();
 
     }
 

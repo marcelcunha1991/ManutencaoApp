@@ -116,7 +116,7 @@ public class CriarOrdemActivity extends AppCompatActivity {
         textView23 = (TextView) findViewById(R.id.textView23);
 
         textView22.setText("Linha: ");
-        textView23.setText("Máqina: ");
+        textView23.setText("Máquina: ");
         swithch1.setChecked(false) ;
 
         if (hierarquia.equals("3")){

@@ -74,6 +74,11 @@ public interface RetrofitClass {
                                            @Field("dataFim") String dataFim);
 
     @FormUrlEncoded
+    @POST("atividadeOrdem/alterar/")
+    Call<Void> insereObservacaoNaAtividade(@Field("id") int id,
+                                           @Field("observacao") String observacao);
+
+    @FormUrlEncoded
     @POST("atividadeOrdem/criar/")
     Call<Atividade> criarAtividadeAgendada(
                                          @Field("dataManutencao") String dataManutencao,

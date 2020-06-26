@@ -34,7 +34,7 @@
 
             <EditText
                 android:id="@+id/edtObservacao"
-                android:layout_width="582dp"
+                android:layout_width="512dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:ems="10"
@@ -47,7 +47,7 @@
                 android:id="@+id/textView34"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="48dp"
+                android:layout_marginTop="44dp"
                 android:text="USOU ALGO ?:"
                 android:textSize="20sp"
                 app:layout_constraintEnd_toEndOf="@+id/textView32"
@@ -57,19 +57,18 @@
 
             <Spinner
                 android:id="@+id/spnItemEstoque"
-                android:layout_width="420dp"
-                android:layout_height="43dp"
-                android:layout_marginTop="48dp"
-                app:layout_constraintEnd_toEndOf="@+id/edtObservacao"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toStartOf="@+id/textView34"
-                app:layout_constraintTop_toBottomOf="@+id/textView34" />
+                android:layout_width="360dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp"
+                app:layout_constraintBottom_toBottomOf="@+id/textView34"
+                app:layout_constraintStart_toEndOf="@+id/textView34"
+                app:layout_constraintTop_toTopOf="@+id/textView34" />
 
             <EditText
                 android:id="@+id/edtQuantidade"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="43dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="16dp"
                 android:ems="10"
                 android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="@+id/spnItemEstoque"
@@ -80,7 +79,7 @@
                 android:id="@+id/btnAdicionar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="16dp"
                 app:layout_constraintBottom_toBottomOf="@+id/edtQuantidade"
                 app:layout_constraintStart_toEndOf="@+id/edtQuantidade"
                 app:layout_constraintTop_toTopOf="@+id/edtQuantidade"
