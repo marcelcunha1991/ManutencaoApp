@@ -98,14 +98,12 @@ public class CustomAdapterOrdem extends ArrayAdapter<IdOrdem> implements View.On
 
     public String returnStatusOrdem(int i){
 
-       if(i == 0){
+        if(i == 1){
            return "Para Aprovação";
-       }else if(i == 1){
-           return "Pendente";
        }else if(i == 2){
-           return "Realizando";
+           return "Á iniciar";
        }else if(i == 3){
-           return "Pausada";
+           return "Executando";
        }else{
            return "Finalizado";
        }

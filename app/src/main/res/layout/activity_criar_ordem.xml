@@ -172,6 +172,26 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/edtOrdemDescricao"
         app:layout_constraintTop_toBottomOf="@+id/edtOrdemDescricao" />
+
+    <TextView
+        android:id="@+id/textView37"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="52dp"
+        android:textSize="20dp"
+        android:text="Houve Parada?"
+        app:layout_constraintBottom_toBottomOf="@+id/spnTipo"
+        app:layout_constraintStart_toEndOf="@+id/spnTipo"
+        app:layout_constraintTop_toTopOf="@+id/spnTipo" />
+
+    <Switch
+        android:id="@+id/isParada"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="44dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView37"
+        app:layout_constraintStart_toEndOf="@+id/textView37"
+        app:layout_constraintTop_toTopOf="@+id/textView37" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

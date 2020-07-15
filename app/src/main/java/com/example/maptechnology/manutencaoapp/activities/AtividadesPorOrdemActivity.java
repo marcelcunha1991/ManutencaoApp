@@ -49,9 +49,9 @@ public class AtividadesPorOrdemActivity extends AppCompatActivity {
         setContentView(R.layout.activity_atividades_por_ordem);
 
         Intent i = getIntent();
-        idOrdem = i.getIntExtra("idOrdem",0);
-        tipo = i.getIntExtra("tipo",0);
-        conjunto  = i.getIntExtra("conjunto",0);
+        idOrdem = i.getIntExtra("idOrdem", 0);
+        tipo = i.getIntExtra("tipo", 0);
+        conjunto = i.getIntExtra("conjunto", 0);
 
         listView = (ListView) findViewById(R.id.list);
 
@@ -62,10 +62,10 @@ public class AtividadesPorOrdemActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(getApplicationContext(),InsereAtividadesNaOrdemActivity.class);
-                i.putExtra("idOrdem",idOrdem);
-                i.putExtra("tipo",tipo);
-                i.putExtra("conjunto",conjunto);
+                Intent i = new Intent(getApplicationContext(), InsereAtividadesNaOrdemActivity.class);
+                i.putExtra("idOrdem", idOrdem);
+                i.putExtra("tipo", tipo);
+                i.putExtra("conjunto", conjunto);
                 startActivity(i);
 
             }
@@ -92,12 +92,12 @@ public class AtividadesPorOrdemActivity extends AppCompatActivity {
 
     }
 
-    public void listNotifyChange(){
+    public void listNotifyChange() {
         adapter.notifyDataSetChanged();
     }
 
 
-    public void chamadaAtividadesPorordem(){
+    public void chamadaAtividadesPorordem() {
 
         Call<Atividades> call2 = apiService.atividadesPorOrdem(idOrdem);
 
@@ -110,7 +110,7 @@ public class AtividadesPorOrdemActivity extends AppCompatActivity {
 
                 if (response.message().equals("OK")) {
                     lista = response.body();
-                    adapter = new CustomAdapterAtividade(lista.getAtividades(), getApplicationContext(),gson,apiService,retrofit,AtividadesPorOrdemActivity.this);
+                    adapter = new CustomAdapterAtividade(lista.getAtividades(), getApplicationContext(), gson, apiService, retrofit, AtividadesPorOrdemActivity.this);
                     listView.setAdapter(adapter);
 
                 } else {
@@ -126,9 +126,6 @@ public class AtividadesPorOrdemActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
 
 
     @Override
@@ -148,27 +145,27 @@ public class AtividadesPorOrdemActivity extends AppCompatActivity {
             chamadaAtividadesPorordem();
             return true;
 
-        }else if(id == R.id.finalizarOrdem){
+        } else if (id == R.id.finalizarOrdem) {
 
-            if(adapter.getAtividadesAbertas() > 0 ){
+            if (adapter.getAtividadesAbertas() > 0) {
 
                 Toast.makeText(getApplicationContext(), "Você possui atividades abertas, tente finalizar as mesmas " +
                         "e atualizar a tela para finalizar a ordem", Toast.LENGTH_LONG).show();
-            }else{
+            } else {
 
                 Intent i = new Intent(getApplicationContext(), CincoPorquesActivity.class);
-                i.putExtra("idOrdem",idOrdem);
+                i.putExtra("idOrdem", idOrdem);
                 startActivity(i);
                 this.finish();
             }
 
-        }else if(id == R.id.editarOrdem){
+        } else if (id == R.id.editarOrdem) {
 
-            if (((AppApplication) this.getApplication()).getTipoUsuario().equals("3")){
+            if (((AppApplication) this.getApplication()).getTipoUsuario().equals("3")) {
 
-                Toast.makeText(getApplicationContext(),"Você não tem autorização para editar a ordem",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Você não tem autorização para editar a ordem", Toast.LENGTH_SHORT).show();
 
-            }else{
+            } else {
 
                 Intent i = new Intent(getApplicationContext(), CriarOrdemActivity.class);
                 i.putExtra("idOrdem", idOrdem);
@@ -181,5 +178,13 @@ public class AtividadesPorOrdemActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        chamadaAtividadesPorordem();
+    }
+
 
 }

@@ -141,15 +141,18 @@ public class OrdensDoDiaActivity extends AppCompatActivity implements AdapterVie
                 OrdensDoDia ordens= response.body();
 
                 if (response.message().equals("OK")) {
+                    MenuItem item = menu.findItem(R.id.alert);
 
                     if(ordens.getOrdem().size() > 0) {
 
-                        MenuItem item = menu.findItem(R.id.alert);
-
                         if (!hierarquia.equals("3")) {
                             item.setVisible(true);
+                        }else{
+                            item.setVisible(false);
                         }
 
+                    }else{
+                        item.setVisible(false);
                     }
 
                 } else {
@@ -340,6 +343,41 @@ public class OrdensDoDiaActivity extends AppCompatActivity implements AdapterVie
         });
     }
 
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        Call<OrdensDoDia> call2 = apiService.detalheOrdemPorData(returnData());
+
+        call2.enqueue(new Callback<OrdensDoDia>() {
+
+            @Override
+            public void onResponse(Call<OrdensDoDia> call, retrofit2.Response<OrdensDoDia> response) {
+                int statusCode = response.code();
+                Log.d("Retrofit ", String.valueOf(statusCode));
+                lista = response.body();
+
+                if (response.message().equals("OK")) {
+
+                    adapter = new CustomAdapterOrdem(lista.getOrdem(), getApplicationContext());
+                    listView.setAdapter(adapter);
+                    checkSolicitacaoOrdem();
+
+
+                } else {
+
+                    Toast.makeText(getApplicationContext(), "Não foi possível acessar as Ordens de Manutenção", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrdensDoDia> call, Throwable t) {
+                // Log error here since request failed
+                Log.d("error", t.toString());
+            }
+        });
+
+    }
 
 
 

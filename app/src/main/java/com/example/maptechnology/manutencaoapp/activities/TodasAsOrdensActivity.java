@@ -101,4 +101,40 @@ public class TodasAsOrdensActivity extends AppCompatActivity implements AdapterV
         startActivityForResult(intent,3);
 
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+
+        Call<OrdensDoDia> call2 = apiService.ordensAtivas();
+
+        call2.enqueue(new Callback<OrdensDoDia>() {
+
+            @Override
+            public void onResponse(Call<OrdensDoDia> call, retrofit2.Response<OrdensDoDia> response) {
+                int statusCode = response.code();
+                Log.d("Retrofit ", String.valueOf(statusCode));
+                lista = response.body();
+
+                if (response.message().equals("OK")) {
+
+                    adapter = new CustomAdapterOrdem(lista.getOrdem(), getApplicationContext());
+                    listView.setAdapter(adapter);
+
+
+
+                } else {
+
+                    Toast.makeText(getApplicationContext(), "Não foi possível acessar as Ordens de Manutenção", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<OrdensDoDia> call, Throwable t) {
+                // Log error here since request failed
+                Log.d("error", t.toString());
+            }
+        });
+
+    }
 }

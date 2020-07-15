@@ -174,6 +174,9 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
                 }
             }
         });
+        edtDate.requestFocus();
+
+
 
         edtDate.setOnClickListener(new View.OnClickListener() {
             @Override

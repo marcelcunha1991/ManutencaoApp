@@ -225,13 +225,13 @@ public class CustomAdapterAtividade extends ArrayAdapter<Atividade> implements V
             }
         }
 
+        if(botao != 2){
+
             call2.enqueue(new Callback<Atividades>() {
 
                 @Override
                 public void onResponse(Call<Atividades> call, retrofit2.Response<Atividades> response) {
                     int statusCode = response.code();
-
-                    Log.d("Retrofit Code: ", String.valueOf(statusCode));
 
                     Log.d("Retrofit Message: ", response.message());
 
@@ -259,6 +259,17 @@ public class CustomAdapterAtividade extends ArrayAdapter<Atividade> implements V
                     Log.d("error", t.toString());
                 }
             });
+
+            Toast.makeText(mContext, "Atividade Atualizada", Toast.LENGTH_SHORT).show();
+            try {
+                Thread.sleep(1500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            activity.chamadaAtividadesPorordem();
+        }
+
+
 
 
     }

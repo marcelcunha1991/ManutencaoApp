@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.example.maptechnology.manutencaoapp.R;
 import com.example.maptechnology.manutencaoapp.application.AppApplication;
+import com.example.maptechnology.manutencaoapp.models.Atividades;
 import com.example.maptechnology.manutencaoapp.models.Estoque;
 import com.example.maptechnology.manutencaoapp.models.Estoque_;
 import com.example.maptechnology.manutencaoapp.models.Linha;
@@ -28,7 +29,10 @@ import com.example.maptechnology.manutencaoapp.rest.RetrofitClass;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -197,6 +201,11 @@ public class ObservaoCorretivaActivity extends AppCompatActivity {
 
     private void salvarObservacao() {
 
+        Date currentTime = Calendar.getInstance().getTime();
+
+        String pattern = "yyyy-MM-dd HH:mm:ss";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
         if(!edtObservacao.getText().toString().equals("")){
 
 
@@ -266,7 +275,36 @@ public class ObservaoCorretivaActivity extends AppCompatActivity {
             });
         }
 
-        finish();
+        Call<Atividades> call3  = apiService.alteraStatusAtividade(idAtividade, 4, null, null, null,simpleDateFormat.format(currentTime));
+        call3.enqueue(new Callback<Atividades>() {
+
+            @Override
+            public void onResponse(Call<Atividades> call, retrofit2.Response<Atividades> response) {
+                int statusCode = response.code();
+
+                if (response.message().equals("OK")) {
+
+                    Toast.makeText(getApplicationContext(), "Atividade Atualizada", Toast.LENGTH_SHORT).show();
+
+                } else {
+
+                    Toast.makeText(getApplicationContext(), "Erro ao Atualizar", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Atividades> call, Throwable t) {
+                // Log error here since request failed
+                Log.d("error", t.toString());
+            }
+        });
+        try {
+            Thread.sleep(1500);
+            finish();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
 
     }
 

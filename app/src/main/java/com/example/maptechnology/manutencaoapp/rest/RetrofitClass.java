@@ -123,7 +123,8 @@ public interface RetrofitClass {
                              @Field("status")int status,
                              @Field("falha") String falha,
                              @Field("area") int area,
-                             @Field("conjunto") int conjunto);
+                             @Field("conjunto") int conjunto,
+                             @Field("isParada") boolean isParada);
 
     @FormUrlEncoded
     @POST("ordem/ordensDoDia/")

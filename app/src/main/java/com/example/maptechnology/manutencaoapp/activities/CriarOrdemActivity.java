@@ -54,6 +54,7 @@ public class CriarOrdemActivity extends AppCompatActivity {
     Spinner spnConjunto;
     Spinner spnArea;
     Switch swithch1;
+    Switch isParada;
     TextView textView22;
     TextView textView23;
     Falhas falhas;
@@ -111,6 +112,7 @@ public class CriarOrdemActivity extends AppCompatActivity {
         spnConjunto = (Spinner) findViewById(R.id.spnConjunto);
         spnArea = (Spinner) findViewById(R.id.spnArea);
         swithch1 = (Switch) findViewById(R.id.switch1);
+        isParada = (Switch) findViewById(R.id.isParada);
 
         textView22 = (TextView) findViewById(R.id.textView22);
         textView23 = (TextView) findViewById(R.id.textView23);
@@ -406,6 +408,7 @@ public class CriarOrdemActivity extends AppCompatActivity {
         Log.d("user_id ", String.valueOf(user_id));
 
         int frequenciaManutencao;
+        boolean checkisParada = false;
         if(swithch1.isChecked()){
             frequenciaManutencao = returnDate();
         }else{
@@ -413,6 +416,9 @@ public class CriarOrdemActivity extends AppCompatActivity {
         }
         final int status = ((hierarquia.equals("3")) ? 1 : 2);
 
+        if(isParada.isChecked()){
+            checkisParada = true;
+        }
         Call<IdOrdem> call2 = apiService.criarOrdem(edtDescricao.getText().toString(),
                "cod"+currentTime.toString(),
                 simpleDateFormat.format(currentTime),
@@ -422,7 +428,8 @@ public class CriarOrdemActivity extends AppCompatActivity {
                 status,
                 edtFalha.getText().toString(),
                 areas.getArea().get(spnArea.getSelectedItemPosition()).getId(),
-                conjuntosPorArea.getConjuntos().get(spnConjunto.getSelectedItemPosition()).getId()
+                conjuntosPorArea.getConjuntos().get(spnConjunto.getSelectedItemPosition()).getId(),
+                checkisParada
                 );
 
         call2.enqueue(new Callback<IdOrdem>() {
