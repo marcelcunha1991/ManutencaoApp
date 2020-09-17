@@ -36,11 +36,16 @@ public class CincoPorquesActivity extends AppCompatActivity {
     Retrofit retrofit;
     RetrofitClass apiService;
     int idOrdem;
-    EditText edtPorque1;
-    EditText edtPorque2;
-    EditText edtPorque3;
-    EditText edtPorque4;
-    EditText edtPorque5;
+//    EditText edtPorque1;
+//    EditText edtPorque2;
+//    EditText edtPorque3;
+//    EditText edtPorque4;
+//    EditText edtPorque5;
+    Spinner edtPorque1;
+    Spinner edtPorque2;
+    Spinner edtPorque3;
+    Spinner edtPorque4;
+    Spinner edtPorque5;
     Porques porques;
 
     @Override
@@ -51,11 +56,16 @@ public class CincoPorquesActivity extends AppCompatActivity {
         Intent i = getIntent();
         idOrdem = i.getIntExtra("idOrdem",0);
 
-        edtPorque1 = (EditText) findViewById(R.id.edtPorque1);
-        edtPorque2 = (EditText) findViewById(R.id.edtPorque2);
-        edtPorque3 = (EditText) findViewById(R.id.edtPorque3);
-        edtPorque4 = (EditText) findViewById(R.id.edtPorque4);
-        edtPorque5 = (EditText) findViewById(R.id.edtPorque5);
+//        edtPorque1 = (EditText) findViewById(R.id.edtPorque1);
+//        edtPorque2 = (EditText) findViewById(R.id.edtPorque2);
+//        edtPorque3 = (EditText) findViewById(R.id.edtPorque3);
+//        edtPorque4 = (EditText) findViewById(R.id.edtPorque4);
+//        edtPorque5 = (EditText) findViewById(R.id.edtPorque5)
+        edtPorque1 = (Spinner) findViewById(R.id.spnPorque01);
+        edtPorque2 = (Spinner) findViewById(R.id.spnPorque02);
+        edtPorque3 = (Spinner) findViewById(R.id.spnPorque03);
+        edtPorque4 = (Spinner) findViewById(R.id.spnPorque04);
+        edtPorque5 = (Spinner) findViewById(R.id.spnPorque05);
 
 
         SharedPreferences pref = getApplicationContext().getSharedPreferences(getString(R.string.pref_key), 0); // 0 - for private mode
@@ -73,6 +83,52 @@ public class CincoPorquesActivity extends AppCompatActivity {
                 .build();
 
         apiService = retrofit.create(RetrofitClass.class);
+
+
+        Call<Porques> call2 = apiService.getPorques();
+
+        call2.enqueue(new Callback<Porques>() {
+
+            @Override
+            public void onResponse(Call<Porques> call, retrofit2.Response<Porques> response) {
+                int statusCode = response.code();
+                porques= response.body();
+
+                ArrayList<String> listaAreas = new ArrayList<String>();
+
+                Log.d("Retrofit ", String.valueOf(statusCode));
+
+
+                if (response.message().equals("OK")) {
+
+                    for (Porque falha: porques.getPorque()){
+
+                        listaAreas.add(falha.getDescricao());
+                    }
+
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                            R.layout.spinner_layout, listaAreas);
+
+                    edtPorque1.setAdapter(dataAdapter);
+                    edtPorque2.setAdapter(dataAdapter);
+                    edtPorque3.setAdapter(dataAdapter);
+                    edtPorque4.setAdapter(dataAdapter);
+                    edtPorque5.setAdapter(dataAdapter);
+
+                } else {
+
+                    Toast.makeText(getApplicationContext(), "Não foi possível Preencher o Spinner de Áreas", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Porques> call, Throwable t) {
+                // Log error here since request failed
+                Log.d("error", t.toString());
+            }
+        });
+
+
 
 
     }
@@ -109,12 +165,19 @@ public class CincoPorquesActivity extends AppCompatActivity {
 
     public void salvarCincoPorques(){
 
+//        Call<CincoPorques> call2 = apiService.criarCincoPorques(idOrdem,
+//                edtPorque1.getSelectedItem().toString(),
+//                edtPorque2.getSelectedItem().toString(),
+//                edtPorque3.getSelectedItem().toString(),
+//                edtPorque4.getSelectedItem().toString(),
+//                edtPorque5.getSelectedItem().toString());
+
         Call<CincoPorques> call2 = apiService.criarCincoPorques(idOrdem,
-                edtPorque1.getText().toString(),
-                edtPorque2.getText().toString(),
-                edtPorque3.getText().toString(),
-                edtPorque4.getText().toString(),
-                edtPorque5.getText().toString());
+                porques.getPorque().get(edtPorque1.getSelectedItemPosition()).getId(),
+                porques.getPorque().get(edtPorque2.getSelectedItemPosition()).getId(),
+                porques.getPorque().get(edtPorque3.getSelectedItemPosition()).getId(),
+                porques.getPorque().get(edtPorque4.getSelectedItemPosition()).getId(),
+                porques.getPorque().get(edtPorque5.getSelectedItemPosition()).getId());
 
         call2.enqueue(new Callback<CincoPorques>() {
 
@@ -178,19 +241,19 @@ public class CincoPorquesActivity extends AppCompatActivity {
 
         int numerosPreenchidos = 0;
 
-        if(!edtPorque1.getText().toString().equals("")){
+        if(!edtPorque1.getSelectedItem().toString().equals("")){
             numerosPreenchidos = numerosPreenchidos + 1;
         }
-        if(!edtPorque2.getText().toString().equals("")){
+        if(!edtPorque2.getSelectedItem().toString().equals("")){
             numerosPreenchidos = numerosPreenchidos + 1;
         }
-        if(!edtPorque3.getText().toString().equals("")){
+        if(!edtPorque3.getSelectedItem().toString().equals("")){
             numerosPreenchidos = numerosPreenchidos + 1;
         }
-        if(!edtPorque4.getText().toString().equals("")){
+        if(!edtPorque4.getSelectedItem().toString().equals("")){
             numerosPreenchidos = numerosPreenchidos + 1;
         }
-        if(!edtPorque5.getText().toString().equals("")){
+        if(!edtPorque5.getSelectedItem().toString().equals("")){
             numerosPreenchidos = numerosPreenchidos + 1;
         }
 

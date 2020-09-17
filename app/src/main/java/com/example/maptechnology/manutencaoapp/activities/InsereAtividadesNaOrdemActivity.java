@@ -67,7 +67,7 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
     AllUsers listaUsuarios;
     Retrofit retrofit;
     RetrofitClass apiService;
-    EditText edtManutencao;
+
     ArrayAdapter<String> dataAdapterOnde;
 
     EditText edtDate;
@@ -103,7 +103,7 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
         edtHoraInicio = (EditText) findViewById(R.id.edtHoraInicio);
         edtHoraTermino = (EditText) findViewById(R.id.edtHoraTermino);
         swtJaRealizado = (Switch) findViewById(R.id.swtJaRealizada);
-        edtManutencao = (EditText)  findViewById(R.id.edtManutencao);
+
         Intent intent = getIntent();
 
         idOrdem = intent.getIntExtra("idOrdem",0);
@@ -131,7 +131,6 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
 
         edtHoraInicio.setEnabled(false);
 
-        habilitaManutencao();
 
         edtHoraInicio.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -199,16 +198,6 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
             }
         });
 
-//        rdbConjuntos.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-//                if (isChecked == true){
-//                    rdbConjuntos.setChecked(true);
-//                    carregaConjuntos();
-//                }
-//            }
-//        });
-
         rdbPecas.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -248,24 +237,17 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
 
     }
 
-    private void habilitaManutencao() {
 
-        if (tipo == 2){
-            spnManutencao.setEnabled(false);
-        }else{
-            edtManutencao.setEnabled(false);
-        }
-    }
 
 
 
 
     private void populaSpinners() {
 
-        if (tipo != 2){
+        if (tipo == 2){
 
 
-        Call<Manutencoes> call2 = apiService.detalheManutencao();
+        Call<Manutencoes> call2 = apiService.detalheManutencaoCorretiva();
 
         call2.enqueue(new Callback<Manutencoes>() {
 
@@ -302,6 +284,47 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
                 Log.d("error", t.toString());
             }
         });
+
+        }else{
+
+            Call<Manutencoes> call2 = apiService.detalheManutencao();
+
+            call2.enqueue(new Callback<Manutencoes>() {
+
+                @Override
+                public void onResponse(Call<Manutencoes> call, retrofit2.Response<Manutencoes> response) {
+                    int statusCode = response.code();
+                    Log.d("Retrofit ", String.valueOf(statusCode));
+                    manutencoes = response.body();
+
+                    if (response.message().equals("OK")) {
+                        List<String> nomesManutencoes = new ArrayList<String>();
+                        for(Manutencao manutencao:manutencoes.getManutencao()){
+
+                            nomesManutencoes.add(manutencao.getDescricao());
+
+                        }
+
+                        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                                R.layout.spinner_layout, nomesManutencoes);
+
+
+                        spnManutencao.setAdapter(dataAdapter);
+
+
+                    } else {
+
+                        Toast.makeText(getApplicationContext(), "Não foi possível acessar as Ordens de Manutenção", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Manutencoes> call, Throwable t) {
+                    // Log error here since request failed
+                    Log.d("error", t.toString());
+                }
+            });
+
         }
 
         carregaSubConjuntos();
@@ -494,7 +517,7 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
                     for(Atividade atividade:atividades.getAtividades()){
 
                         if (tipo == 2){
-                            nomesSubConjuntos.add(atividade.getManutencaoCorretiva() + "   Data: " + atividade.getDataManutencao() );
+                            nomesSubConjuntos.add(atividade.getManutencaoCorretiva().getDescricao() + "   Data: " + atividade.getDataManutencao() );
                         }else{
                             nomesSubConjuntos.add(atividade.getManutencao().getDescricao() + "   Data: " + atividade.getDataManutencao() );
                         }
@@ -566,10 +589,11 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
             horatermino = simpleDateFormatInicio.format(currentTimeTermino);
         }
 
-        if(rdbPecas.isChecked() == true){
+        if(rdbPecas.isChecked()){
 
 
         if(!swtJaRealizado.isChecked()){
+            Log.d("Id da Manutencao: ", String.valueOf(manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId()));
 
             if (tipo == 2){
                 callSubConjuntos = apiService.criarAtividadeAgendada(
@@ -580,8 +604,8 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
                         String.valueOf(pecas.getPecas().get(spnOnde.getSelectedItemPosition()).getId()),
                         null,
                         null,
-                        edtManutencao.getText().toString(),
-                        edtManutencao.getText().toString());
+                        manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getDescricao(),
+                        manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId());
             }else{
 
                 callSubConjuntos = apiService.criarAtividadeAgendada(
@@ -593,7 +617,7 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
                         null,
                         null,
                         spnManutencao.getSelectedItem().toString(),
-                        null);
+                        0);
 
             }
 
@@ -613,8 +637,8 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
                         horaInicio,
                         horatermino,
                         4,
-                        edtManutencao.getText().toString(),
-                        edtManutencao.getText().toString()
+                        manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getDescricao(),
+                        manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId()
 
                 );
 
@@ -632,7 +656,7 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
                         horatermino,
                         4,
                         spnManutencao.getSelectedItem().toString(),
-                        null
+                        0
 
                 );
 
@@ -640,8 +664,9 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
 
         }
 
-        }else if (rdbSubConjuntos.isChecked() == true) {
+        }else if (rdbSubConjuntos.isChecked()) {
 
+            Log.d("Id da Manutencao: ", String.valueOf(manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId()));
 
             if(!swtJaRealizado.isChecked()){
 
@@ -655,8 +680,8 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
                             null,
                             null,
                             String.valueOf(subConjuntos.getSubconjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
-                            edtManutencao.getText().toString(),
-                            edtManutencao.getText().toString()
+                            manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getDescricao(),
+                            manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId()
 
                     );
 
@@ -670,7 +695,7 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
                             null,
                             String.valueOf(subConjuntos.getSubconjuntos().get(spnOnde.getSelectedItemPosition()).getId()),
                             spnManutencao.getSelectedItem().toString(),
-                            null
+                            0
 
                     );
                 }
@@ -689,8 +714,8 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
                             horaInicio,
                             horatermino,
                             4,
-                            edtManutencao.getText().toString(),
-                            edtManutencao.getText().toString()
+                            manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getDescricao(),
+                            manutencoes.getManutencao().get(spnManutencao.getSelectedItemPosition()).getId()
 
                     );
 
@@ -708,7 +733,7 @@ public class InsereAtividadesNaOrdemActivity extends AppCompatActivity {
                             horatermino,
                             4,
                             spnManutencao.getSelectedItem().toString(),
-                            null
+                            0
 
                     );
                 }

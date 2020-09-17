@@ -47,54 +47,16 @@
         app:layout_constraintStart_toStartOf="@+id/switch1"
         app:layout_constraintTop_toBottomOf="@+id/switch1" />
 
-    <TextView
-        android:id="@+id/textView15"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="52dp"
-        android:text="Falha:"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView13" />
-
-    <TextView
-        android:id="@+id/textView13"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="40dp"
-        android:text="Descrição:"
-        android:textSize="20dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/edtOrdemDescricao"
-        android:layout_width="534dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.281"
-        app:layout_constraintStart_toEndOf="@+id/textView13"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/edtFrequencia"
         android:layout_width="131dp"
         android:layout_height="52dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="52dp"
         android:ems="10"
         android:inputType="number"
-        app:layout_constraintEnd_toEndOf="@+id/edtFalha"
-        app:layout_constraintHorizontal_bias="0.028"
+        app:layout_constraintBottom_toBottomOf="@+id/textView17"
         app:layout_constraintStart_toEndOf="@+id/textView17"
-        app:layout_constraintTop_toBottomOf="@+id/edtFalha" />
+        app:layout_constraintTop_toTopOf="@+id/textView17" />
 
     <Spinner
         android:id="@+id/spnFrenquencia"
@@ -161,17 +123,16 @@
         app:layout_constraintTop_toTopOf="@+id/textView23"
         app:layout_constraintVertical_bias="0.458" />
 
-    <EditText
-        android:id="@+id/edtFalha"
-        android:layout_width="534dp"
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="@+id/edtOrdemDescricao"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/edtOrdemDescricao"
-        app:layout_constraintTop_toBottomOf="@+id/edtOrdemDescricao" />
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="28dp"
+        android:text="Falha:"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView37"
@@ -192,6 +153,17 @@
         app:layout_constraintBottom_toBottomOf="@+id/textView37"
         app:layout_constraintStart_toEndOf="@+id/textView37"
         app:layout_constraintTop_toTopOf="@+id/textView37" />
+
+    <Spinner
+        android:id="@+id/spnFalhas"
+        android:layout_width="534dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.379"
+        app:layout_constraintStart_toEndOf="@+id/textView15"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

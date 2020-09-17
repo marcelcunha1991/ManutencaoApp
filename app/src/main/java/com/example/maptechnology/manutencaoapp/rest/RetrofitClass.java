@@ -89,7 +89,7 @@ public interface RetrofitClass {
                                          @Field("idConjunto") String idConjunto,
                                          @Field("idSubConjunto") String idSubConjunto,
                                          @Field("descricao") String descricao,
-                                         @Field("manutencaoCorretiva") String manutencaoCorretiva
+                                         @Field("manutencaoCorretiva") int manutencaoCorretiva
                                    );
 
     @FormUrlEncoded
@@ -106,7 +106,7 @@ public interface RetrofitClass {
             @Field("dataFim") String dataFim,
             @Field("status") int status,
             @Field("descricao") String descricao,
-            @Field("manutencaoCorretiva") String manutencaoCorretiva
+            @Field("manutencaoCorretiva") int manutencaoCorretiva
 
 
 
@@ -121,7 +121,7 @@ public interface RetrofitClass {
                              @Field("responsavelCriacao") int responsavelCriacao,
                              @Field("tipo") int tipo,
                              @Field("status")int status,
-                             @Field("falha") String falha,
+                             @Field("falha") int falha,
                              @Field("area") int area,
                              @Field("conjunto") int conjunto,
                              @Field("isParada") boolean isParada);
@@ -148,11 +148,11 @@ public interface RetrofitClass {
     @FormUrlEncoded
     @POST("ordem/criaCincoPorque/")
     Call<CincoPorques> criarCincoPorques(@Field("idOrdem") int idOrdem,
-                                         @Field("primeiroPorque") String primeiroPorque,
-                                         @Field("segundoPorque") String segundoPorque,
-                                         @Field("terceiroPorque") String terceiroPorque,
-                                         @Field("quartoPorque") String quartoPorque,
-                                         @Field("quintoPorque") String quintoPorque
+                                         @Field("primeiroPorque") int primeiroPorque,
+                                         @Field("segundoPorque") int segundoPorque,
+                                         @Field("terceiroPorque") int terceiroPorque,
+                                         @Field("quartoPorque") int quartoPorque,
+                                         @Field("quintoPorque") int quintoPorque
                                  );
 
     @GET("usuario/listaUsuarios/")
@@ -183,6 +183,9 @@ public interface RetrofitClass {
     @FormUrlEncoded
     @POST("calendario/alteraCalendario/")
     Call<Void> alteraStatusCalendario(@Field("status") int status,@Field("id") int id);
+
+    @POST("manutencaoCorretiva/detalhe/")
+    Call<Manutencoes> detalheManutencaoCorretiva();
 
     @POST("manutencao/detalhe/")
     Call<Manutencoes> detalheManutencao();

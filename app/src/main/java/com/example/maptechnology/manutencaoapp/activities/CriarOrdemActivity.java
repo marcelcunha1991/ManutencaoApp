@@ -46,11 +46,11 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class CriarOrdemActivity extends AppCompatActivity {
 
-    EditText edtDescricao;
+//    EditText edtDescricao;
     EditText edtFrequencia;
     Spinner spnFrequencia;
     Spinner spnTipo;
-    EditText edtFalha;
+    Spinner edtFalha;
     Spinner spnConjunto;
     Spinner spnArea;
     Switch swithch1;
@@ -104,10 +104,10 @@ public class CriarOrdemActivity extends AppCompatActivity {
 
 
 
-        edtDescricao = (EditText) findViewById(R.id.edtOrdemDescricao);
+//        edtDescricao = (EditText) findViewById(R.id.edtOrdemDescricao);
         edtFrequencia = (EditText) findViewById(R.id.edtFrequencia);
         spnFrequencia = (Spinner) findViewById(R.id.spnFrenquencia);
-        edtFalha = (EditText) findViewById(R.id.edtFalha);
+        edtFalha = (Spinner) findViewById(R.id.spnFalhas);
         spnTipo = (Spinner) findViewById(R.id.spnTipo);
         spnConjunto = (Spinner) findViewById(R.id.spnConjunto);
         spnArea = (Spinner) findViewById(R.id.spnArea);
@@ -198,8 +198,8 @@ public class CriarOrdemActivity extends AppCompatActivity {
 
                 if (response.message().equals("OK")) {
 
-                        edtDescricao.setText(ordem.getOrdem().getDescricao());
-                        spnTipo.setSelection(retornaPosicaoSpinnerFalhas(ordem.getOrdem().getFalha()));
+//                        edtDescricao.setText(ordem.getOrdem().getDescricao());
+                        spnTipo.setSelection(retornaPosicaoSpinnerFalhas(ordem.getOrdem().getFalha().getDescricao()));
 
 
                 } else {
@@ -261,8 +261,10 @@ public class CriarOrdemActivity extends AppCompatActivity {
                         listaFalhas.add(falha.getDescricao());
                     }
 
-//                    if ()
-//                    spnFalhas.setSelection(retornaPosicaoSpinnerFalhas(ordem.getOrdem().getFalha().getDescricao()));
+                    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(getApplicationContext(),
+                            R.layout.spinner_layout, listaFalhas);
+
+                    edtFalha.setAdapter(dataAdapter);
 
                 } else {
 
@@ -403,7 +405,7 @@ public class CriarOrdemActivity extends AppCompatActivity {
 
         Log.d("time ", String.valueOf(returnDate()));
         Log.d("tipo ", String.valueOf(tipos.get(spnTipo.getSelectedItem().toString())));
-        Log.d("descricao", edtDescricao.getText().toString());
+//        Log.d("descricao", edtDescricao.getText().toString());
         Log.d("data ", simpleDateFormat.format(currentTime));
         Log.d("user_id ", String.valueOf(user_id));
 
@@ -419,14 +421,14 @@ public class CriarOrdemActivity extends AppCompatActivity {
         if(isParada.isChecked()){
             checkisParada = true;
         }
-        Call<IdOrdem> call2 = apiService.criarOrdem(edtDescricao.getText().toString(),
+        Call<IdOrdem> call2 = apiService.criarOrdem(edtFalha.getSelectedItem().toString(),
                "cod"+currentTime.toString(),
                 simpleDateFormat.format(currentTime),
                 frequenciaManutencao,
                 user_id,
                 tipos.get(spnTipo.getSelectedItem().toString()),
                 status,
-                edtFalha.getText().toString(),
+                falhas.getFalhas().get(edtFalha.getSelectedItemPosition()).getId(),
                 areas.getArea().get(spnArea.getSelectedItemPosition()).getId(),
                 conjuntosPorArea.getConjuntos().get(spnConjunto.getSelectedItemPosition()).getId(),
                 checkisParada

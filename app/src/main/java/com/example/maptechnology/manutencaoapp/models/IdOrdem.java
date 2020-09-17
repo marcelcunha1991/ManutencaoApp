@@ -37,7 +37,7 @@ public class IdOrdem implements Serializable {
     private Responsavel responsavelCriacao;
     @SerializedName("falha")
     @Expose
-    private String falha;
+    private Falha falha;
     @SerializedName("area")
     @Expose
     private IdArea area;
@@ -118,11 +118,11 @@ public class IdOrdem implements Serializable {
     }
 
 
-    public String getFalha() {
+    public Falha getFalha() {
         return falha;
     }
 
-    public void setFalha(String falha) {
+    public void setFalha(Falha falha) {
         this.falha = falha;
     }
 

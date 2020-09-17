@@ -144,7 +144,7 @@ public class CustomAdapterAtividade extends ArrayAdapter<Atividade> implements V
         if (dataModel.getManutencao() != null){
             viewHolder.txtDescricao.setText("Manutenção: "+dataModel.getManutencao().getDescricao());
         }else{
-            viewHolder.txtDescricao.setText("Manutenção: "+dataModel.getManutencaoCorretiva());
+            viewHolder.txtDescricao.setText("Manutenção: "+dataModel.getManutencaoCorretiva().getDescricao());
         }
 
         if(dataModel.getIdConjunto() != null) {
